@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- MenuItem שמשמש כ-SubMenu holder -->
+    <item
+        android:id="@+id/nav_group_labels"
+        android:title="Labels">
+        <menu>
+            <!-- כאן ה-LabelMenuHelper יוסיף את התוויות -->
+        </menu>
+    </item>
+
+    <!-- Add label נשאר מחוץ -->
+    <item
+        android:id="@+id/nav_add_label"
+        android:title="Add label"
+        android:icon="@drawable/add_24px" />
+
+</menu>
