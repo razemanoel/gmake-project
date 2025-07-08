@@ -1,0 +1,144 @@
+.mail-card {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.mail-card.read {
+  background-color: #f9f9f9;
+}
+
+.mail-card.unread {
+  background-color: #e3f2fd;
+}
+
+.dark-mode .mail-card {
+  background-color: #1e1e1e;
+  color: #eee;
+}
+
+.mail-icons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mail-star.starred {
+  color: #f4b400;
+}
+
+.mail-draft-label {
+  font-size: 12px;
+  color: #b71c1c;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.mail-sender,
+.mail-subject,
+.mail-time {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.mail-subject {
+  font-weight: bold;
+}
+
+.mail-time {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ==== Tooltip Styling ==== */
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.tooltip-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Dark mode tooltip override */
+.dark-mode .tooltip {
+  background-color: #555;
+  color: #fff;
+}
+
+.mail-card:hover {
+  background-color: #f1f1f1;
+}
+
+.dark-mode .mail-card:hover {
+  background-color: #2a2a2a;
+}
+.icon-button svg {
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+/* Dark mode icon styling */
+.dark-mode .icon-button svg {
+  color: #ccc;
+}
+
+.dark-mode .icon-button:hover svg {
+  color: #fff;
+}
+.mail-star.starred {
+  color: gold;
+}
+.dark-mode .mail-star.starred {
+  color: #ffd700; 
+}
+
+.dark-mode .mail-card.unread {
+  font-weight: bold;
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.dark-mode .mail-card.read {
+  font-weight: normal;
+  background-color: #1e1e1e;
+  color: #ccc;
+}
