@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:title="Mail Details"
+        android:titleTextColor="@android:color/white"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="@android:drawable/ic_media_previous"/>
+
+    <!-- Action Icons Row -->
+    <LinearLayout
+        android:id="@+id/actionIconsRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|end"
+        android:padding="12dp"
+        android:divider="?android:attr/dividerVertical"
+        android:showDividers="middle">
+
+        <!-- Restore (Trash only) -->
+        <LinearLayout
+            android:id="@+id/restoreContainer"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="8dp">
+
+            <ImageButton
+                android:id="@+id/restoreButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:contentDescription="Restore"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#EEEEEE"
+                app:tint="#607D8B"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restore"
+                android:textSize="12sp"
+                android:textColor="#607D8B"/>
+        </LinearLayout>
+
+        <!-- Labels picker -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="8dp">
+
+            <ImageButton
+                android:id="@+id/labelsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_label"
+                android:contentDescription="Labels"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#F3E5F5"
+                app:tint="#7B1FA2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Labels"
+                android:textSize="12sp"
+                android:textColor="#7B1FA2"/>
+        </LinearLayout>
+
+        <!-- Delete -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="8dp">
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="Delete"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#FFEBEE"
+                app:tint="#D32F2F"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:textSize="12sp"
+                android:textColor="#D32F2F"/>
+        </LinearLayout>
+
+        <!-- Star -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="16dp">
+
+            <ImageButton
+                android:id="@+id/starButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@android:drawable/btn_star_big_off"
+                android:contentDescription="Star"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#FFF8E1"
+                app:tint="#FFA000"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Star"
+                android:textSize="12sp"
+                android:textColor="#FFA000"/>
+        </LinearLayout>
+
+        <!-- Spam -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="16dp">
+
+            <ImageButton
+                android:id="@+id/spamButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_dialog_alert"
+                android:contentDescription="Spam"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#FFEBEE"
+                app:tint="#C62828"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spam"
+                android:textSize="12sp"
+                android:textColor="#C62828"/>
+        </LinearLayout>
+
+        <!-- Unread -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="16dp">
+
+            <ImageButton
+                android:id="@+id/unreadButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_markunread"
+                android:contentDescription="Unread"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#E3F2FD"
+                app:tint="#1976D2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unread"
+                android:textSize="12sp"
+                android:textColor="#1976D2"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Mail Details Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Subject / From / To / Timestamp -->
+            <TextView
+                android:id="@+id/subjectTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/fromTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/toTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/timestampTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!-- Labels list -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Labels:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"/>
+
+            <LinearLayout
+                android:id="@+id/labelsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Body -->
+            <TextView
+                android:id="@+id/bodyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
