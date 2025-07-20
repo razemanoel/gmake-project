@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.app.utils.DateUtils;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,8 +55,6 @@ public class MailCardAdapter extends RecyclerView.Adapter<MailCardAdapter.MailVi
 
         // Subject and body
         h.subject.setText(mail.getSubject());
-        h.body   .setText(mail.getBody());
-
         // — Unread? → bold, otherwise normal
         boolean isUnread = false;
         if (mail.getLabels() != null) {
@@ -68,15 +67,13 @@ public class MailCardAdapter extends RecyclerView.Adapter<MailCardAdapter.MailVi
         }
         int textStyle = isUnread ? Typeface.BOLD : Typeface.NORMAL;
         h.subject   .setTypeface(h.subject.getTypeface(),   textStyle);
-        h.body      .setTypeface(h.body.getTypeface(),      textStyle);
         h.from      .setTypeface(h.from.getTypeface(),      textStyle);
         h.timestamp .setTypeface(h.timestamp.getTypeface(), textStyle);
-        h.labels    .setTypeface(h.labels.getTypeface(),    textStyle);
 
         int bgColor = isUnread
-                ? ContextCompat.getColor(h.itemView.getContext(), R.color.unread_light_blue)
-                : Color.WHITE;
-        h.itemView.setBackgroundColor(bgColor);
+                ? Color.WHITE
+                : ContextCompat.getColor(h.itemView.getContext(), R.color.lightGray);
+        ((CardView) h.itemView).setCardBackgroundColor(bgColor);
 
         // — From/To logic
         boolean isSent = false;
@@ -89,24 +86,12 @@ public class MailCardAdapter extends RecyclerView.Adapter<MailCardAdapter.MailVi
             }
         }
         h.from.setText(isSent
-                ? "To:   " + mail.getToUsername()
-                : "From: " + mail.getFromUsername()
+                ? mail.getToUsername()
+                : mail.getFromUsername()
         );
 
         // Timestamp
-        h.timestamp.setText("Sent: " + DateUtils.formatMailTs(mail.getTimestamp()));
-
-        // Labels line
-        if (mail.getLabels() != null && !mail.getLabels().isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mail.getLabels().size(); i++) {
-                if (i > 0) sb.append(", ");
-                sb.append(mail.getLabels().get(i).getName());
-            }
-            h.labels.setText("Labels: " + sb);
-        } else {
-            h.labels.setText("Labels: None");
-        }
+        h.timestamp.setText(DateUtils.formatMailTs(mail.getTimestamp()));
 
         // — Starred? choose icon
         boolean isStarred = false;
@@ -120,15 +105,15 @@ public class MailCardAdapter extends RecyclerView.Adapter<MailCardAdapter.MailVi
         }
         h.btnStar.setImageResource(
                 isStarred
-                        ? android.R.drawable.btn_star_big_on
-                        : android.R.drawable.btn_star_big_off
+                        ? R.drawable.star_fill_24px
+                        : R.drawable.star_24px
         );
 
         // — Read/unread icon
         h.btnToggleRead.setImageResource(
                 isUnread
-                        ? R.drawable.ic_markunread  // your “unread” drawable
-                        : R.drawable.ic_markread     // your “read” drawable
+                        ? R.drawable.mail_24px  // your “unread” drawable
+                        : R.drawable.mark_email_read_24px     // your “read” drawable
         );
 
         // Trash icon is static in XML (ic_menu_delete)
@@ -150,16 +135,14 @@ public class MailCardAdapter extends RecyclerView.Adapter<MailCardAdapter.MailVi
     }
 
     public static class MailViewHolder extends RecyclerView.ViewHolder {
-        public final TextView subject, body, from, timestamp, labels;
+        public final TextView subject, from, timestamp;
         public final ImageButton btnToggleRead, btnStar, btnTrash;
 
         public MailViewHolder(@NonNull View itemView) {
             super(itemView);
             subject        = itemView.findViewById(R.id.textSubject);
-            body           = itemView.findViewById(R.id.textBody);
             from           = itemView.findViewById(R.id.textFrom);
             timestamp      = itemView.findViewById(R.id.textTimestamp);
-            labels         = itemView.findViewById(R.id.textLabels);
 
             btnToggleRead = itemView.findViewById(R.id.btnToggleRead);
             btnStar       = itemView.findViewById(R.id.btnStar);

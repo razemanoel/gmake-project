@@ -1,256 +1,269 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
 
-    <!-- Top App Bar -->
+    <!-- 🔙 Toolbar לבן עם כפתור חזור בלבד -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:title="Mail Details"
-        android:titleTextColor="@android:color/white"
-        android:background="?attr/colorPrimary"
-        app:navigationIcon="@android:drawable/ic_media_previous"/>
+        android:layout_height="wrap_content"
+        android:background="@color/appBackground"
+        android:elevation="4dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title=""
+        app:titleTextColor="@android:color/black" />
 
-    <!-- Action Icons Row -->
+    <!-- 📧 Mail content -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:layout_margin="12dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subject of mail"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:id="@+id/textFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From: sender@example.com"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/textTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="To: you@example.com"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/textTimestamp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jul 20, 2025"
+                android:textSize="12sp"
+                android:textColor="@color/gray"
+                android:layout_marginTop="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGray"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/textBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is the email body text."
+                android:textSize="16sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 🔼 Action Buttons -->
     <LinearLayout
-        android:id="@+id/actionIconsRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical|end"
-        android:padding="12dp"
-        android:divider="?android:attr/dividerVertical"
-        android:showDividers="middle">
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="16dp">
 
-        <!-- Restore (Trash only) -->
-        <LinearLayout
-            android:id="@+id/restoreContainer"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="8dp">
-
-            <ImageButton
-                android:id="@+id/restoreButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_revert"
-                android:contentDescription="Restore"
-                android:background="@drawable/circle_bg"
-                android:backgroundTint="#EEEEEE"
-                app:tint="#607D8B"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Restore"
-                android:textSize="12sp"
-                android:textColor="#607D8B"/>
-        </LinearLayout>
-
-        <!-- Labels picker -->
+        <!-- Label Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="8dp">
+            android:layout_marginHorizontal="8dp">
 
             <ImageButton
                 android:id="@+id/labelsButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:padding="8dp"
-                android:src="@drawable/ic_label"
+                android:src="@drawable/label_24px"
                 android:contentDescription="Labels"
                 android:background="@drawable/circle_bg"
-                android:backgroundTint="#F3E5F5"
-                app:tint="#7B1FA2"/>
+                android:backgroundTint="#F3E5F5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Labels"
-                android:textSize="12sp"
-                android:textColor="#7B1FA2"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Delete -->
+        <!-- Delete Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="8dp">
+            android:layout_marginHorizontal="8dp">
 
             <ImageButton
                 android:id="@+id/deleteButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_menu_delete"
+                android:src="@drawable/delete_24px"
                 android:contentDescription="Delete"
                 android:background="@drawable/circle_bg"
-                android:backgroundTint="#FFEBEE"
-                app:tint="#D32F2F"/>
+                android:backgroundTint="#FFEBEE" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"
-                android:textSize="12sp"
-                android:textColor="#D32F2F"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Star -->
+        <!-- Star Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="16dp">
+            android:layout_marginHorizontal="8dp">
 
             <ImageButton
                 android:id="@+id/starButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:padding="8dp"
-                android:src="@android:drawable/btn_star_big_off"
+                android:src="@drawable/star_24px"
                 android:contentDescription="Star"
                 android:background="@drawable/circle_bg"
-                android:backgroundTint="#FFF8E1"
-                app:tint="#FFA000"/>
+                android:backgroundTint="#FFF8E1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Star"
-                android:textSize="12sp"
-                android:textColor="#FFA000"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Spam -->
+        <!-- Spam Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="16dp">
+            android:layout_marginHorizontal="8dp">
 
             <ImageButton
                 android:id="@+id/spamButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_dialog_alert"
+                android:src="@drawable/block_24px"
                 android:contentDescription="Spam"
                 android:background="@drawable/circle_bg"
-                android:backgroundTint="#FFEBEE"
-                app:tint="#C62828"/>
+                android:backgroundTint="#FFEBEE"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Spam"
-                android:textSize="12sp"
-                android:textColor="#C62828"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Unread -->
+        <!-- Unread Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="16dp">
+            android:layout_marginHorizontal="8dp">
 
             <ImageButton
                 android:id="@+id/unreadButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:padding="8dp"
-                android:src="@drawable/ic_markunread"
+                android:src="@drawable/mail_24px"
                 android:contentDescription="Unread"
                 android:background="@drawable/circle_bg"
-                android:backgroundTint="#E3F2FD"
-                app:tint="#1976D2"/>
+                android:backgroundTint="#E3F2FD"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unread"
-                android:textSize="12sp"
-                android:textColor="#1976D2"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Restore Button -->
+        <LinearLayout
+            android:id="@+id/restoreContainer"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="8dp">
+
+            <ImageButton
+                android:id="@+id/restoreButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="8dp"
+                android:src="@drawable/restore_from_trash_24px"
+                android:contentDescription="Restore"
+                android:background="@drawable/circle_bg"
+                android:backgroundTint="#E8F5E9"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restore"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Mail Details Scrollable Content -->
-    <ScrollView
+    <!-- 🏷️ Labels section -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:text="Labels:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="4dp" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+    <LinearLayout
+        android:id="@+id/labelsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="start" />
 
-            <!-- Subject / From / To / Timestamp -->
-            <TextView
-                android:id="@+id/subjectTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_marginBottom="12dp"/>
-
-            <TextView
-                android:id="@+id/fromTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/toTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/timestampTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <!-- Labels list -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Labels:"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"/>
-
-            <LinearLayout
-                android:id="@+id/labelsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"/>
-
-            <!-- Body -->
-            <TextView
-                android:id="@+id/bodyTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"/>
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>

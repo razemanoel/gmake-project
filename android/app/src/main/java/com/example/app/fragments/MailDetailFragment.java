@@ -1,5 +1,6 @@
 package com.example.app.fragments;
 
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,9 @@ import com.example.app.repositories.LabelRepository;
 import com.example.app.repositories.MailRepository;
 import com.example.app.utils.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -86,8 +90,6 @@ public class MailDetailFragment extends Fragment {
         );
 
 
-
-
         // 2️⃣ Find Views
         deleteButton  = view.findViewById(R.id.deleteButton);
         starButton    = view.findViewById(R.id.starButton);
@@ -104,11 +106,12 @@ public class MailDetailFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        subjectTextView   = view.findViewById(R.id.subjectTextView);
-        fromTextView      = view.findViewById(R.id.fromTextView);
-        toTextView        = view.findViewById(R.id.toTextView);
-        timestampTextView = view.findViewById(R.id.timestampTextView);
-        bodyTextView      = view.findViewById(R.id.bodyTextView);
+
+        subjectTextView   = view.findViewById(R.id.textSubject);
+        fromTextView      = view.findViewById(R.id.textFrom);
+        toTextView        = view.findViewById(R.id.textTo);
+        timestampTextView = view.findViewById(R.id.textTimestamp);
+        bodyTextView      = view.findViewById(R.id.textBody);
         labelsContainer   = view.findViewById(R.id.labelsContainer);
 
         // 3️⃣ Deserialize Mail
@@ -208,30 +211,38 @@ public class MailDetailFragment extends Fragment {
             Toast.makeText(getContext(), "Not in Trash", Toast.LENGTH_SHORT).show();
             return;
         }
+
         List<String> ids = new ArrayList<>();
         for (MailLabel l : currentMail.getLabels()) {
             if (!l.getId().equalsIgnoreCase("trash")) {
                 ids.add(l.getId());
             }
         }
+
         repo.updateMailLabels(currentMail.getId(), ids, new Callback<Void>() {
             @Override public void onResponse(Call<Void> c, Response<Void> r) {
                 if (r.isSuccessful()) {
-                    currentMail.getLabels().removeIf(l -> l.getId().equalsIgnoreCase("trash"));
-                    displayLabels(currentMail.getLabels());
                     Toast.makeText(getContext(), "Mail restored", Toast.LENGTH_SHORT).show();
+
+                    // ✅ עדכן את האינבוקס
                     Bundle result = new Bundle();
                     result.putBoolean("shouldRefresh", true);
                     getParentFragmentManager().setFragmentResult("inboxRefresh", result);
+
+                    // ✅ חזור אחורה למסך הקודם
+                    requireActivity().getSupportFragmentManager().popBackStack();
+
                 } else {
                     Toast.makeText(getContext(), "Restore failed: " + r.code(), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override public void onFailure(Call<Void> c, Throwable t) {
                 Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private List<String> extractUrls(String text) {
         List<String> urls = new ArrayList<>();
@@ -242,6 +253,7 @@ public class MailDetailFragment extends Fragment {
     }
 
     private void displayLabels(List<MailLabel> labels) {
+        if (!isAdded() || getContext() == null) return;
         labelsContainer.removeAllViews();
         if (labels != null) {
             for (MailLabel label: labels) {
@@ -254,9 +266,6 @@ public class MailDetailFragment extends Fragment {
                 bg.setCornerRadius(40f);
                 bg.setColor(getColorForLabel(label.getId()));
                 chip.setBackground(bg);
-
-                chip.setClickable(true);
-                chip.setOnClickListener(v -> toggleLabel(label));
 
                 LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -272,19 +281,19 @@ public class MailDetailFragment extends Fragment {
         // update icons
         starButton.setImageResource(
                 hasLabel("star")
-                        ? android.R.drawable.btn_star_big_on
-                        : android.R.drawable.btn_star_big_off
+                        ? R.drawable.star_fill_24px
+                        : R.drawable.star_24px
         );
         spamButton.setImageResource(
                 hasLabel("spam")
-                        ? android.R.drawable.ic_dialog_alert
-                        : android.R.drawable.ic_dialog_info
+                        ? R.drawable.block_24px
+                        : R.drawable.block_24px
         );
 
         unreadButton.setImageResource(
                 hasLabel("read")
-                        ? R.drawable.ic_markread
-                        : R.drawable.ic_markunread
+                        ? R.drawable.mail_24px
+                        : R.drawable.mark_email_read_24px
         );
     }
 
@@ -324,97 +333,127 @@ public class MailDetailFragment extends Fragment {
     }
 
     private void showLabelPicker() {
-        // fetch them as LiveData and observe once
         labelRepo.getAllLabels().observe(getViewLifecycleOwner(), labels -> {
-            if (labels == null || labels.isEmpty()) {
-                Toast.makeText(requireContext(), "No labels available", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            if (labels == null) return;
 
-            // filter out the fixed ones:
-            List<Label> custom = new ArrayList<>();
+            List<Label> customLabels = new ArrayList<>();
             for (Label lbl : labels) {
                 if (!LabelMenuHelper.isFixedLabel(lbl.getName())) {
-                    custom.add(lbl);
+                    customLabels.add(lbl);
                 }
             }
 
-            if (custom.isEmpty()) {
-                Toast.makeText(requireContext(), "You don’t have any custom labels yet", Toast.LENGTH_SHORT).show();
+            if (customLabels.isEmpty()) {
+                Toast.makeText(getContext(), "No custom labels", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // build names + checked array
-            CharSequence[] names = new CharSequence[custom.size()];
-            boolean[] checked      = new boolean[custom.size()];
-            for (int i = 0; i < custom.size(); i++) {
-                Label lbl = custom.get(i);
-                names[i] = lbl.getName();
-                // pre-check if this mail already has that label
-                checked[i] = hasLabel(lbl.getId());
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_label_picker, null);
+            LinearLayout container = dialogView.findViewById(R.id.labelListContainer);
+
+            for (Label label : customLabels) {
+                LinearLayout row = new LinearLayout(getContext());
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setPadding(8, 16, 8, 16);
+                row.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
+
+                TextView labelName = new TextView(getContext());
+                labelName.setText(label.getName());
+                labelName.setTextSize(16f);
+                labelName.setLayoutParams(new LinearLayout.LayoutParams(
+                        0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+                boolean alreadyApplied = hasLabel(label.getId());
+
+                TextView actionButton = new TextView(getContext());
+                actionButton.setText(alreadyApplied ? "Remove" : "Add");
+                actionButton.setTextColor(ContextCompat.getColor(requireContext(),
+                        alreadyApplied ? R.color.red : R.color.green));
+                actionButton.setPadding(24, 8, 24, 8);
+                int backgroundRes = alreadyApplied
+                        ? R.drawable.button_remove_background
+                        : R.drawable.button_add_background;
+                actionButton.setBackground(ContextCompat.getDrawable(requireContext(), backgroundRes));
+                actionButton.setOnClickListener(v -> {
+                    List<String> updatedIds = new ArrayList<>();
+
+                    for (MailLabel ml : currentMail.getLabels()) {
+                        if (!ml.getId().equals(label.getId()) && !LabelMenuHelper.isFixedLabel(ml.getName())) {
+                            updatedIds.add(ml.getId());
+                        }
+                    }
+
+                    if (!alreadyApplied) {
+                        updatedIds.add(label.getId());
+                    }
+
+                    // שמור גם את התוויות הקבועות
+                    for (MailLabel ml : currentMail.getLabels()) {
+                        if (LabelMenuHelper.isFixedLabel(ml.getName())) {
+                            updatedIds.add(ml.getId());
+                        }
+                    }
+
+                    repo.updateMailLabels(currentMail.getId(), updatedIds, new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> c, Response<Void> r) {
+                            if (r.isSuccessful()) {
+                                // שלוף מחדש את המייל המעודכן
+                                repo.fetchMailById(currentMail.getId(), new Callback<Mail>() {
+                                    @Override
+                                    public void onResponse(Call<Mail> call, Response<Mail> response) {
+                                        if (response.isSuccessful() && response.body() != null) {
+                                            currentMail = response.body(); // עדכן את המייל המקומי
+                                            displayLabels(currentMail.getLabels());
+                                            // בדוק אם התווית עדיין קיימת
+                                            boolean nowHasLabel = hasLabel(label.getId());
+
+                                            // עדכן את הכפתור
+                                            actionButton.setText(nowHasLabel ? "Remove" : "Add");
+                                            actionButton.setTextColor(ContextCompat.getColor(requireContext(),
+                                                    nowHasLabel ? R.color.red : R.color.green));
+
+                                            GradientDrawable border = new GradientDrawable();
+                                            border.setCornerRadius(24f);
+                                            border.setStroke(2, ContextCompat.getColor(requireContext(),
+                                                    nowHasLabel ? R.color.red : R.color.green));
+                                            border.setColor(ContextCompat.getColor(requireContext(), android.R.color.transparent));
+                                            actionButton.setBackground(border);
+                                        }
+                                    }
+
+                                    @Override public void onFailure(Call<Mail> call, Throwable t) {
+                                        Toast.makeText(getContext(), "Failed to refresh mail", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getContext(), "Failed to update", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> c, Throwable t) {
+                            Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                });
+
+                row.addView(labelName);
+                row.addView(actionButton);
+                container.addView(row);
             }
 
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Choose Labels")
-                    .setMultiChoiceItems(names, checked, (dlg, which, isChecked) -> {
-                        checked[which] = isChecked;
-                    })
-                    .setPositiveButton("OK", (dlg, which) -> {
-                        // 1. Start with all of the mail’s existing labels
-                        List<String> allIds = new ArrayList<>();
-                        for (MailLabel ml : currentMail.getLabels()) {
-                            allIds.add(ml.getId());
-                        }
-
-                        // 2. For each custom label, toggle its presence
-                        for (int i = 0; i < custom.size(); i++) {
-                            String id = custom.get(i).getId();
-                            if (checked[i]) {
-                                // if checked, add it if not already there
-                                if (!allIds.contains(id)) {
-                                    allIds.add(id);
-                                }
-                            } else {
-                                // if unchecked, remove it
-                                allIds.remove(id);
-                            }
-                        }
-
-                        // 3. Send the merged list back to the server
-                        repo.updateMailLabels(currentMail.getId(), allIds, new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> resp) {
-                                if (resp.isSuccessful()) {
-                                    // reload mail & UI
-                                    repo.fetchMailById(currentMail.getId(), new Callback<Mail>() {
-                                        @Override public void onResponse(Call<Mail> c2, Response<Mail> r2) {
-                                            if (r2.isSuccessful() && r2.body() != null) {
-                                                currentMail = r2.body();
-                                                displayLabels(currentMail.getLabels());
-                                            }
-                                        }
-                                        @Override public void onFailure(Call<Mail> c2, Throwable t) { }
-                                    });
-                                    // notify inbox to refresh
-                                    Bundle result = new Bundle();
-                                    result.putBoolean("shouldRefresh", true);
-                                    getParentFragmentManager().setFragmentResult("inboxRefresh", result);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> c, Throwable t) {
-                                Toast.makeText(requireContext(),
-                                        "Failed to update labels",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    })
-
-                    .setNegativeButton("Cancel", null)
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setView(dialogView)
+                    .setNegativeButton("Close", null)
                     .show();
         });
     }
+
 
     private boolean hasLabel(String id) {
         if (currentMail.getLabels() == null) return false;
@@ -495,10 +534,6 @@ public class MailDetailFragment extends Fragment {
 
     private int getColorForLabel(String id) {
         switch (id.toLowerCase()) {
-            case "sent":     return ContextCompat.getColor(requireContext(), R.color.label_green_light);
-            case "read":     return ContextCompat.getColor(requireContext(), R.color.label_green);
-            case "received": return ContextCompat.getColor(requireContext(), R.color.label_blue);
-            case "spam":     return ContextCompat.getColor(requireContext(), R.color.label_red);
             default:         return ContextCompat.getColor(requireContext(), R.color.label_gray);
         }
     }
