@@ -77,12 +77,16 @@ public class InboxFragment extends Fragment
                 "inboxRefresh",
                 getViewLifecycleOwner(),
                 (key, bundle) -> {
-                    // re-run your load & filter logic
                     mailViewModel.getInbox().observe(getViewLifecycleOwner(), mails -> {
+                        if (mails != null) {
+                            Collections.sort(mails, (a, b) ->
+                                    b.getTimestamp().compareTo(a.getTimestamp()));
+                        }
                         filterAndDisplay(mails, labelId, textEmpty);
                     });
                 }
         );
+
 
         mailViewModel.getInbox().observe(getViewLifecycleOwner(), mails -> {
             if (mails != null) {

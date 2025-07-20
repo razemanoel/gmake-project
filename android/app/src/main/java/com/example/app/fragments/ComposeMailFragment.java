@@ -40,148 +40,156 @@ public class ComposeMailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(
-                R.layout.fragment_compose_mail, container, false);
+        View view = inflater.inflate(R.layout.fragment_compose_mail, container, false);
 
-        // ▶ Toolbar back arrow
+        // Toolbar
         MaterialToolbar toolbar = view.findViewById(R.id.composeTopAppBar);
-        toolbar.setNavigationOnClickListener(v ->
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .popBackStack()
-        );
+        toolbar.setNavigationOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
-        // ▶ Find views
-        toEditText      = view.findViewById(R.id.toEditText);
+        // Inputs
+        toEditText = view.findViewById(R.id.toEditText);
         subjectEditText = view.findViewById(R.id.subjectEditText);
-        bodyEditText    = view.findViewById(R.id.bodyEditText);
-        sendButton      = view.findViewById(R.id.sendButton);
+        bodyEditText = view.findViewById(R.id.bodyEditText);
+        sendButton = view.findViewById(R.id.sendButton);
         saveDraftButton = view.findViewById(R.id.saveDraftButton);
 
-        // ▶ Setup repo + ViewModel
-        repository    = new MailRepository(requireContext());
-        mailViewModel = new ViewModelProvider(this,
-                new MailViewModelFactory(repository))
-                .get(MailViewModel.class);
+        // ViewModel & Repo
+        repository = new MailRepository(requireContext());
+        mailViewModel = new ViewModelProvider(this, new MailViewModelFactory(repository)).get(MailViewModel.class);
 
-        // ▶ Prefill if editing a draft
+        // Prefill fields if editing a draft
         if (getArguments() != null && getArguments().containsKey("mail")) {
-            initialMail = new Gson()
-                    .fromJson(getArguments().getString("mail"), Mail.class);
-            boolean wasDraft = initialMail.getLabels() != null &&
-                    initialMail.getLabels().stream()
-                            .anyMatch(l -> "drafts".equalsIgnoreCase(l.getId()));
-            if (wasDraft) {
-                toEditText     .setText(initialMail.getToUsername());
+            initialMail = new Gson().fromJson(getArguments().getString("mail"), Mail.class);
+            boolean isDraft = initialMail.getLabels() != null &&
+                    initialMail.getLabels().stream().anyMatch(l -> "drafts".equalsIgnoreCase(l.getId()));
+            if (isDraft) {
+                if (initialMail.getToUsername() != null)
+                    toEditText.setText(initialMail.getToUsername());
                 subjectEditText.setText(initialMail.getSubject());
-                bodyEditText   .setText(initialMail.getBody());
+                bodyEditText.setText(initialMail.getBody());
                 isEditingDraft = true;
             }
         }
 
-        // ▶ Send button
-        saveDraftButton.setOnClickListener(v -> {
-            String to  = toEditText.getText().toString().trim();
+        // ▶ SEND button
+        sendButton.setOnClickListener(v -> {
+            String to = toEditText.getText().toString().trim();
             String sub = subjectEditText.getText().toString().trim();
-            String bd  = bodyEditText.getText().toString().trim();
+            String bd = bodyEditText.getText().toString().trim();
 
-            if (to.isEmpty() && sub.isEmpty() && bd.isEmpty()) {
-                Toast.makeText(getContext(),
-                        "Draft is empty — nothing saved",
-                        Toast.LENGTH_SHORT).show();
+            if (to.isEmpty() || sub.isEmpty() || bd.isEmpty()) {
+                Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
-            saveDraftButton.setEnabled(false);
 
-            // If we cleared “To” on an existing draft, keep the old value:
-            if (isEditingDraft && to.isEmpty()) {
-                to = initialMail.getToUsername();
+            sendButton.setEnabled(false);
+
+            Mail newMail = new Mail();
+            newMail.setToUsername(to);
+            newMail.setSubject(sub);
+            newMail.setBody(bd);
+            newMail.setIsDraft(false);
+
+            Callback<ResponseBody> sendCallback = new Callback<>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Toast.makeText(getContext(), "Mail sent!", Toast.LENGTH_SHORT).show();
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Send failed", t);
+                    Toast.makeText(getContext(), "Send failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    sendButton.setEnabled(true);
+                }
+            };
+
+            if (isEditingDraft) {
+                repository.deleteMail(initialMail.getId(), new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        mailViewModel.sendMail(newMail, sendCallback);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        sendCallback.onFailure(null, t);
+                    }
+                });
+            } else {
+                mailViewModel.sendMail(newMail, sendCallback);
+            }
+        });
+
+        // ▶ SAVE DRAFT button
+        saveDraftButton.setOnClickListener(v -> {
+            String to = toEditText.getText().toString().trim();
+            String sub = subjectEditText.getText().toString().trim();
+            String bd = bodyEditText.getText().toString().trim();
+
+            if (to.isEmpty() && sub.isEmpty() && bd.isEmpty()) {
+                Toast.makeText(getContext(), "Draft is empty — nothing saved", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            // Build the draft object
-            Mail draft = (isEditingDraft ? initialMail : new Mail());
+            saveDraftButton.setEnabled(false);
+
+            Mail draft = new Mail();
+            if (isEditingDraft && initialMail != null) {
+                draft.setId(initialMail.getId());
+            }
             draft.setToUsername(to);
             draft.setSubject(sub);
             draft.setBody(bd);
             draft.setIsDraft(true);
 
+            Callback<ResponseBody> saveCallback = new Callback<>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    repository.updateMailLabels(
+                            draft.getId(),
+                            Collections.singletonList("drafts"),
+                            new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> c2, Response<Void> r2) {
+                                    Toast.makeText(getContext(), "Draft saved", Toast.LENGTH_SHORT).show();
+                                    requireActivity().getSupportFragmentManager().popBackStack();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> c2, Throwable t2) {
+                                    Toast.makeText(getContext(), "Label error: " + t2.getMessage(), Toast.LENGTH_SHORT).show();
+                                    saveDraftButton.setEnabled(true);
+                                }
+                            }
+                    );
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getContext(), "Save failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    saveDraftButton.setEnabled(true);
+                }
+            };
+
             if (isEditingDraft) {
-                // —— UPDATE only ——
                 repository.updateMail(draft, new Callback<Mail>() {
                     @Override
-                    public void onResponse(Call<Mail> call, Response<Mail> resp) {
-                        if (!resp.isSuccessful()) {
-                            Toast.makeText(getContext(),
-                                    "Failed to update draft (code " + resp.code() + ")",
-                                    Toast.LENGTH_SHORT).show();
-                            saveDraftButton.setEnabled(true);
-                            return;
-                        }
-                        Toast.makeText(getContext(),
-                                "Draft updated",
-                                Toast.LENGTH_SHORT).show();
-                        // tell Inbox to refresh
-                        Bundle result = new Bundle();
-                        result.putBoolean("shouldRefresh", true);
-                        getParentFragmentManager()
-                                .setFragmentResult("inboxRefresh", result);
-                        // go back
-                        requireActivity()
-                                .getSupportFragmentManager()
-                                .popBackStack();
+                    public void onResponse(Call<Mail> call, Response<Mail> response) {
+                        saveCallback.onResponse(null, null);
                     }
 
                     @Override
                     public void onFailure(Call<Mail> call, Throwable t) {
-                        Toast.makeText(getContext(),
-                                "Failed to update draft: " + t.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                        saveDraftButton.setEnabled(true);
+                        saveCallback.onFailure(null, t);
                     }
                 });
             } else {
-                // —— FIRST SAVE —— (exactly as before)
-                repository.createDraft(draft, new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> c, Response<ResponseBody> r) {
-                        if (!r.isSuccessful()) {
-                            Toast.makeText(getContext(),
-                                    "Failed to save draft (code " + r.code() + ")",
-                                    Toast.LENGTH_SHORT).show();
-                            saveDraftButton.setEnabled(true);
-                            return;
-                        }
-                        // parse new draft so we can update it next time
-                        try {
-                            String json = r.body().string();
-                            initialMail = new Gson().fromJson(json, Mail.class);
-                            isEditingDraft = true;
-                        } catch (Exception ex) {
-                            Log.w(TAG, "Could not parse new draft", ex);
-                            isEditingDraft = true;
-                        }
-                        Toast.makeText(getContext(),
-                                "Draft saved",
-                                Toast.LENGTH_SHORT).show();
-                        Bundle result = new Bundle();
-                        result.putBoolean("shouldRefresh", true);
-                        getParentFragmentManager()
-                                .setFragmentResult("inboxRefresh", result);
-                        requireActivity()
-                                .getSupportFragmentManager()
-                                .popBackStack();
-                    }
-                    @Override
-                    public void onFailure(Call<ResponseBody> c, Throwable t) {
-                        Toast.makeText(getContext(),
-                                "Failed to save draft: " + t.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                        saveDraftButton.setEnabled(true);
-                    }
-                });
+                repository.createDraft(draft, saveCallback);
             }
         });
 
-        return view; ///best
+        return view;
     }
 }
