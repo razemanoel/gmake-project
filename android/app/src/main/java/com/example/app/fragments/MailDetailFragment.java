@@ -14,7 +14,6 @@ import com.example.app.entities.Label;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
-import android.os.Bundle;
 
 import com.example.app.R;
 import com.example.app.api.LabelAPI;
