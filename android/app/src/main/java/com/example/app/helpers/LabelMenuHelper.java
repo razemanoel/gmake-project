@@ -1,6 +1,7 @@
 package com.example.app.helpers;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -68,7 +69,9 @@ public class LabelMenuHelper {
                             if (response.isSuccessful()) {
                                 Toast.makeText(context, "Label deleted!", Toast.LENGTH_SHORT).show();
                                 if (context instanceof MainActivity) {
-                                    ((MainActivity) context).refreshLabels();
+                                    MainActivity ma = (MainActivity)context;
+                                    ma.refreshLabels();   // rebuild the drawer
+                                    ma.getSupportFragmentManager().setFragmentResult("inboxRefresh", new Bundle());
                                 }
                             } else {
                                 Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
