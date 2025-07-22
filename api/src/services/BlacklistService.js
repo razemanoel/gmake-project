@@ -1,53 +1,48 @@
-// Import the reusable TCP command function from utils
 const { sendTcpCommand } = require('../utils/tcpClient');
+const Blacklist = require('../models/Blacklist');
 
-/**
- * Service to check whether a URL is blacklisted via the TCP Bloom filter server.
- */
 class BlacklistService {
-  constructor() {
-    this.urlMap = new Map(); // id -> url
-    this.counter = 1;
+  async addUrl(url) {
+    try {
+      const existing = await Blacklist.findOne({ url });
+      if (existing) return existing.id;
+
+      const doc = new Blacklist({ url });
+      const saved = await doc.save();
+      return saved._id.toString();
+    } catch (err) {
+      throw new Error('Failed to add URL to DB');
+    }
   }
 
-  addUrl(url) {
-    const id = this.counter++;
-    this.urlMap.set(id, url);
-    return id;
+  async getUrlById(id) {
+    try {
+      const doc = await Blacklist.findById(id);
+      return doc ? doc.url : null;
+    } catch {
+      return null;
+    }
   }
 
-  getUrlById(id) {
-    return this.urlMap.get(id);
+  async deleteUrlById(id) {
+    try {
+      const doc = await Blacklist.findByIdAndDelete(id);
+      return !!doc;
+    } catch {
+      return false;
+    }
   }
 
-  deleteUrlById(id) {
-    return this.urlMap.delete(id);
-  }
-
-  /**
-   * Sends a "GET <url>" command to the TCP server and interprets the result.
-   * @param {string} url - The URL to check.
-   * @returns {Promise<boolean>} - true if blacklisted, false otherwise.
-   */
   async checkUrl(url) {
     try {
-      // Send the GET command to the TCP server and wait for the response (e.g., "true true\n")
       const rawResponse = await sendTcpCommand(`GET ${url}`);
-
-      // Split the response by lines and trim whitespace (in case of multiple lines or trailing \n)
       const lines = rawResponse.split('\n').map(line => line.trim());
-
-      // Check if the response contains the exact string "true true"
-      // This means: Bloom filter matched AND the URL is in the actual blacklist set
       return lines.includes('true true');
-
     } catch (err) {
-      // In case of a connection error or any unexpected issue, log and safely return false
       console.error(`Blacklist check failed for ${url}:`, err.message);
       return false;
     }
   }
 }
 
-// Export an instance of the service so it can be used elsewhere in the app
 module.exports = new BlacklistService();
