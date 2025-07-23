@@ -322,6 +322,14 @@ public class MailDetailFragment extends Fragment {
                             if (r2.isSuccessful() && r2.body() != null) {
                                 currentMail = r2.body();
                                 displayLabels(currentMail.getLabels());
+
+                                if (clicked.getId().equalsIgnoreCase("spam")) {
+                                    Bundle result = new Bundle();
+                                    result.putBoolean("shouldRefresh", true);
+                                    getParentFragmentManager().setFragmentResult("inboxRefresh", result);
+
+                                    requireActivity().getSupportFragmentManager().popBackStack();
+                                }
                             }
                         }
                         @Override public void onFailure(Call<Mail> c2, Throwable t) { }
@@ -390,7 +398,6 @@ public class MailDetailFragment extends Fragment {
                         updatedIds.add(label.getId());
                     }
 
-                    // שמור גם את התוויות הקבועות
                     for (MailLabel ml : currentMail.getLabels()) {
                         if (LabelMenuHelper.isFixedLabel(ml.getName())) {
                             updatedIds.add(ml.getId());
@@ -401,17 +408,14 @@ public class MailDetailFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Void> c, Response<Void> r) {
                             if (r.isSuccessful()) {
-                                // שלוף מחדש את המייל המעודכן
                                 repo.fetchMailById(currentMail.getId(), new Callback<Mail>() {
                                     @Override
                                     public void onResponse(Call<Mail> call, Response<Mail> response) {
                                         if (response.isSuccessful() && response.body() != null) {
-                                            currentMail = response.body(); // עדכן את המייל המקומי
+                                            currentMail = response.body();
                                             displayLabels(currentMail.getLabels());
-                                            // בדוק אם התווית עדיין קיימת
                                             boolean nowHasLabel = hasLabel(label.getId());
 
-                                            // עדכן את הכפתור
                                             actionButton.setText(nowHasLabel ? "Remove" : "Add");
                                             actionButton.setTextColor(ContextCompat.getColor(requireContext(),
                                                     nowHasLabel ? R.color.red : R.color.green));
