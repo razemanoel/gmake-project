@@ -38,7 +38,9 @@ public class InboxFragment extends Fragment
     private MailViewModel mailViewModel;
     private MailCardAdapter adapter;
 
-    private String labelId = "received"; // ברירת מחדל ל-Inbox
+    private String labelId = "received";
+    private String searchQuery = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,10 +48,11 @@ public class InboxFragment extends Fragment
 
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        // ✅ קבלת labelId מה-Bundle
         if (getArguments() != null) {
             labelId = getArguments().getString("labelId", "received").toLowerCase();
+            searchQuery = getArguments().getString("searchQuery", null);
         }
+
 
         FloatingActionButton fab = view.findViewById(R.id.fabCompose);
         fab.setOnClickListener(v -> {
@@ -116,6 +119,15 @@ public class InboxFragment extends Fragment
         List<Mail> filtered = new ArrayList<>();
 
         for (Mail mail : allMails) {
+
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                String content = (mail.getSubject() + " " + mail.getBody()).toLowerCase();
+                if (content.contains(searchQuery.toLowerCase())) {
+                    filtered.add(mail);
+                }
+                continue;
+            }
+
             List<String> labelIds = new ArrayList<>();
             if (mail.getLabels() != null) {
                 for (MailLabel l : mail.getLabels()) {

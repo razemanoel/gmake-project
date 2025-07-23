@@ -11,13 +11,16 @@ import android.widget.Toast;
 
 import com.example.app.R;
 import com.example.app.entities.Mail;
+import com.example.app.entities.MailLabel;
 import com.example.app.repositories.MailRepository;
 import com.example.app.viewmodels.MailViewModel;
 import com.example.app.viewmodels.MailViewModelFactory;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -106,10 +109,30 @@ public class ComposeMailFragment extends Fragment {
             };
 
             if (isEditingDraft) {
-                repository.deleteMail(initialMail.getId(), new Callback<Void>() {
+                List<String> labels = new ArrayList<>();
+                if (initialMail.getLabels() != null) {
+                    for (MailLabel l : initialMail.getLabels()) {
+                        labels.add(l.getId().toLowerCase());
+                    }
+                }
+                if (!labels.contains("trash")) {
+                    labels.add("trash");
+                }
+
+                repository.updateMailLabels(initialMail.getId(), labels, new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        mailViewModel.sendMail(newMail, sendCallback);
+                        repository.deleteMail(initialMail.getId(), new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                mailViewModel.sendMail(newMail, sendCallback);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                sendCallback.onFailure(null, t);
+                            }
+                        });
                     }
 
                     @Override
@@ -117,7 +140,7 @@ public class ComposeMailFragment extends Fragment {
                         sendCallback.onFailure(null, t);
                     }
                 });
-            } else {
+            }   else {
                 mailViewModel.sendMail(newMail, sendCallback);
             }
         });
