@@ -40,44 +40,8 @@ o	User accounts, emails, and labels are stored in MongoDB.
 5.	Dev & Deployment
 o	Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
-EX-5/
-├── backend/                      # C++ Bloom-filter TCP server
-│   ├── src/                      #.cpp/.h files
-│   ├── data/                     # persisted Bloom data, if any
-│   ├── Dockerfile.tcpserver      # builds & runs the C++ server
-│   └── CMakeLists.txt            # CMake project config
-│
-├── api/                          # Node.js + Express API
-│   ├── src/                      # route/controllers/etc.
-│   ├── package.json
-│   ├── server.js                 # main entrypoint
-│   └── Dockerfile.api            # builds & runs the API
-│
-├── frontend/                     # React web application
-│   ├── src/                      # React components, CSS, etc.
-│   ├── public/
-│   ├── package.json
-│   └── Dockerfile.react          # builds & serves the static bundle
-│
-├── android/                      # Native Android client
-│   ├── app/
-│   │   ├── src/
-│   │   │   └── main/
-│   │   │       ├── java/         # Java source
-│   │   │       └── res/
-│   │   │           ├── raw/
-│   │   │           │   └── config.properties
-│   │   │           └── xml/
-│   │   │               └── network_security_config.xml
-│   │   └── build.gradle
-│   └── build.gradle
-│
-├── config/                       # Runtime configuration
-│   └── .env.local                # ports, DB URI, JWT_SECRET, etc.
-│
-├── docker-compose.yml            # Orchestrates all three containers
-├── README.md                     # This guide
-└── .gitignore
+
+
 
 •  backend/: C++ TCP server (Bloom filter)
 •  api/: the Node.js/Express server talking to MongoDB and the C++ service
