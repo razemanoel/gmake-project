@@ -57,12 +57,18 @@ o	Docker Compose orchestrates all components (TCP service, API server, React UI)
 
 
 Gmail-Style Application: Setup & Run Guide
-1. Clone the Repository
-Open terminal and run:
-git clone https://github.com/razemanoel/EX-5.git
-cd the-repo
-2. Create Environment Configuration
-Create a new folder and file for environment variables:
+-Clone the Repository
+   
+-Open terminal and run:
+
+-git clone https://github.com/razemanoel/EX-5.git
+
+-cd the-repo
+
+-Create Environment Configuration
+
+-Create a new folder and file for environment variables:
+
 mkdir -p config
 touch config/.env.local
 Open config/.env.local in your editor and paste:
