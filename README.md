@@ -57,6 +57,7 @@ o	Docker Compose orchestrates all components (TCP service, API server, React UI)
 
 
 Gmail-Style Application: Setup & Run Guide
+
 -Clone the Repository
    
 -Open terminal and run:
