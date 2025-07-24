@@ -1,108 +1,332 @@
-# EX-4: Full-Stack Gmail Web Application
 
-## Project Overview
-This project builds upon the previous backend and API work by integrating a full React-based frontend, resulting in a complete Gmail-style mail system. It combines three key components:
+## Overview
+In this final phase, we completed the entire project, covering both frontend and backend development.
+We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
+1. **C++ TCP server**  
+   - A Bloom-filter–based blacklist service listening on a TCP port  
+2. **Node.js API**  
+   - Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
+3. **React frontend**  
+   - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
+4. **Android app**  
+   - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services  
 
-- A C++ backend TCP server (from EX-2) that manages a Bloom Filter-based blacklist.
-- A Node.js API server (from EX-3) that handles all business logic and persists data in memory or files.
-- A React web interface that allows users to interact with the system via a browser instead of curl or Postman.
+You can run the entire stack with Docker Compose or individually for development.
 
-This part (EX-4) replaces the previous curl-based manual tests from EX-2 and EX-3. All API interaction is now done via the React interface.
+The system supports core Gmail-like functionality, including:
 
----
+- User registration and login  
+- Profile management  
+- Email composition, sending, replying and forwarding  
+- Draft saving and editing  
+- Inbox, Sent, Drafts, Spam and Trash folders  
+- Label creation, editing and assignment  
+- Mail search and filtering  
+- Soft and permanent deletion  
 
-## Architecture Overview
+For detailed explanations of features, components, and usage examples, please refer to the project **Wiki**.  
 
-- **TCP Backend Server (C++)**  
-  Handles Bloom Filter blacklist logic and persists blacklisted URLs to file. Runs concurrently to support multiple API connections over TCP sockets.
 
-- **Node.js API Server**  
-  Implements RESTful API routes for user registration/login, mail management, label handling, and spam detection. Follows MVC architecture with SOLID principles and in-memory data storage.
+How It All Fits Together
+1.	Client Layer
+o	The React web app and the Android app both communicate over HTTP with the Node.js API.
+2.	API Layer
+o	The Node.js server handles data storage (MongoDB), business logic, and JWT-based authentication.
+o	For each spam/blacklist check, it opens a TCP connection to the Bloom-filter service.
+3.	TCP Service
+o	The C++ Bloom-filter server performs ultra-fast, memory-efficient blacklist checks and URL additions.
+4.	Persistence
+o	User accounts, emails, and labels are stored in MongoDB.
+5.	Dev & Deployment
+o	Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
-- **React Frontend**  
-  Users can register, login, view inbox/sent mails, compose messages, manage labels, and edit drafts through a user-friendly interface. The frontend interacts only with the API server.
-
----
-
-## Features
-
-### Authentication
-- User registration and login via the React app.
-- JWT-based session handling.
-- Users upload a profile picture during registration.
-
-### Mail System
-- Compose and send new mail to other users.
-- Save drafts and later update/send them.
-- View inbox, sent items, and full mail content.
-- Delete mails (soft-delete using the “Trash” label).
-- Search mails by keyword.
-
-### Label Management
-- Create new labels.
-- Apply/remove multiple labels per mail.
-- Edit/delete custom labels.
-- System labels include: Inbox, Sent, Read, Unread, Drafts, Spam, Trash, Star.
-
-### Spam & Blacklist Integration
-- If a mail contains a URL from the blacklist, it’s marked as spam for the recipient.
-- Marking a mail as spam will add its URLs to the blacklist (via TCP).
-- Removing the spam label will remove the associated URLs from the blacklist.
-- Blacklist communication is done via TCP to the C++ server using Bloom Filter.
-
----
-
-## File Structure
-
-```
-EX-4/
+EX-5/
+├── backend/                      # C++ Bloom-filter TCP server
+│   ├── src/                      #.cpp/.h files
+│   ├── data/                     # persisted Bloom data, if any
+│   ├── Dockerfile.tcpserver      # builds & runs the C++ server
+│   └── CMakeLists.txt            # CMake project config
 │
-├── backend/                 # C++ TCP server (Bloom Filter blacklist)
-│   ├── src/
-│   ├── Dockerfile.tcpserver
-│   └── CMakeLists.txt
+├── api/                          # Node.js + Express API
+│   ├── src/                      # route/controllers/etc.
+│   ├── package.json
+│   ├── server.js                 # main entrypoint
+│   └── Dockerfile.api            # builds & runs the API
 │
-├── api/                     # Node.js + Express API server
-│   ├── src/
-│   ├── Dockerfile.api
-│   ├── server.js
-│   └── ...
+├── frontend/                     # React web application
+│   ├── src/                      # React components, CSS, etc.
+│   ├── public/
+│   ├── package.json
+│   └── Dockerfile.react          # builds & serves the static bundle
 │
-├── frontend/                # React application
-│   ├── src/
-│   ├── Dockerfile.react
-│   └── ...
+├── android/                      # Native Android client
+│   ├── app/
+│   │   ├── src/
+│   │   │   └── main/
+│   │   │       ├── java/         # Java source
+│   │   │       └── res/
+│   │   │           ├── raw/
+│   │   │           │   └── config.properties
+│   │   │           └── xml/
+│   │   │               └── network_security_config.xml
+│   │   └── build.gradle
+│   └── build.gradle
 │
-└── docker-compose.yml       # Orchestrates all services
-```
+├── config/                       # Runtime configuration
+│   └── .env.local                # ports, DB URI, JWT_SECRET, etc.
+│
+├── docker-compose.yml            # Orchestrates all three containers
+├── README.md                     # This guide
+└── .gitignore
 
----
+•  backend/: C++ TCP server (Bloom filter)
+•  api/: the Node.js/Express server talking to MongoDB and the C++ service
+•  frontend/: React app that talks to the API
+•  android/: the Android Studio project for the mobile client
+•  config/.env.local: overridable env‐vars (ports, secrets, connection strings)
+•  docker-compose.yml: builds & links the three Docker images into a single, live system.
 
-## Running the Project
 
-Run in the terminal:
 
-```bash
-docker compose up --build
-```
 
-This will:
-- Build and start the C++ TCP server (port 5555)
-- Build and start the Node.js API server (port 3000)
-- Build and start the React frontend (port 3001)
 
-Access the application at: [http://localhost:3001](http://localhost:3001)
 
----
 
-## Screenshots
-### Register
-![Register](https://github.com/user-attachments/assets/fe7bf564-53cd-4826-903b-027ae8cd16d9)
-### Login
-![Login](https://github.com/user-attachments/assets/f0b99fd5-8e60-4e79-8a45-207b914e8a73)
-### Inbox Page
-![InboxPage](https://github.com/user-attachments/assets/bb7d8728-8d0e-439b-9254-3bed44f3911d)
-### View Mail
-![ViewMail](https://github.com/user-attachments/assets/30d5bfd9-6225-4ba5-abcf-319181b16bfb)
-### Compose Mail
-![ComposeMail](https://github.com/user-attachments/assets/25347366-dadc-4f8b-9b4e-d7b29752748b)
+Gmail-Style Application: Setup & Run Guide
+1. Clone the Repository
+Open terminal and run:
+git clone https://github.com/razemanoel/EX-5.git
+cd the-repo
+2. Create Environment Configuration
+Create a new folder and file for environment variables:
+mkdir -p config
+touch config/.env.local
+Open config/.env.local in your editor and paste:
+# Node.js API server
+APP_PORT=3000
+CONTAINER_PORT=3000
+
+# C++ TCP (Bloom filter) server
+TCP_PORT=5555
+
+# MongoDB connection (Raz set up)
+CONNECTION_STRING=mongodb://host.docker.internal:27017
+
+# JWT signing secret
+JWT_SECRET="Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5"
+
+# React frontend
+REACT_APP_API_URL=http://localhost:${APP_PORT}
+REACT_PORT=3001
+3. Build & Launch with Docker Compose
+Your docker-compose.yml (v3.8) will build and start:
+• tcpserver (C++ service) → TCP port 5555
+• apiserver (Node.js API) → HTTP port 3000
+• frontend (React web UI) → HTTP port 3001
+Run:
+docker-compose --env-file ./config/.env.local up --build
+Wait until all containers are healthy.
+Verify:
+TCP server at localhost:5555
+API at http://localhost:3000
+Web UI at http://localhost:3001
+
+Docker Compose will:
+1. Parse docker-compose.yml to know which services to bring up.
+2. Load every KEY=VALUE pair from config/.env.local and inject them into each container’s environment.
+3. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
+
+
+To stop and remove containers:
+docker-compose down
+4. Run Services Individually
+If you prefer to inspect logs or develop a single component:
+A. C++ TCP Server:
+cd backend
+mkdir -p build && cd build
+cmake ..
+make
+./tcpserver ${TCP_PORT}
+B. Node.js API Server:
+cd api
+npm install
+npm run dev   # or npm start
+Visit http://localhost:${APP_PORT}
+Expects the TCP server on ${TCP_PORT}
+Connects to MongoDB at ${CONNECTION_STRING}
+C. React Frontend:
+cd frontend
+npm install
+npm start
+Opens in browser at http://localhost:${REACT_PORT}
+Uses API base URL: ${REACT_APP_API_URL}
+5. Configure & Run the Android App
+Open Android Studio → Open an Existing Project → select the android/ folder.
+Create app/src/main/res/raw/config.properties with:
+ip_address=10.0.2.2       # emulator → host machine; or your LAN IP on device
+port=${APP_PORT}          # e.g. 3000
+jwt_secret=${JWT_SECRET}
+Update res/xml/network_security_config.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">10.0.2.2</domain>
+  </domain-config>
+</network-security-config>
+Run the app on an emulator or physical device. It will connect to:
+API at ${APP_PORT}
+TCP service at ${TCP_PORT}
+
+
+
+
+
+
+
+
+Docker:
+1. backend/Dockerfile.tcpserver
+dockerfile
+CopyEdit
+# Stage 1: build the C++ TCP (Bloom-filter) server
+FROM gcc:latest AS builder
+
+WORKDIR /usr/src/app
+
+# Install CMake and other build tools
+RUN apt-get update && \
+    apt-get install -y cmake git && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy all sources and build
+COPY . .
+RUN rm -rf build && mkdir build && cd build && cmake ../backend && make
+
+# Stage 2: runtime image
+FROM gcc:latest AS runtime
+
+WORKDIR /app
+
+# (Optional) install any runtime deps 
+RUN apt-get update && \
+    apt-get install -y python3 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the compiled server and any data files
+COPY --from=builder /usr/src/app/build/server ./server
+COPY backend/data ./data
+
+RUN chmod +x ./server
+
+# Expose the TCP port (matches compose mapping)
+EXPOSE 5555
+
+# Default command: server <port> <other args if any>
+CMD ["./server", "5555", "16", "1"]
+________________________________________
+2. api/Dockerfile.api
+dockerfile
+CopyEdit
+FROM node:18
+
+# Create application directory
+WORKDIR /usr/api
+
+# Install dependencies
+COPY api/package*.json ./
+RUN npm install
+
+# Copy application code
+COPY api/ .
+
+# Expose the API port
+EXPOSE 3000
+
+# Start the server
+CMD ["node", "server.js"]
+________________________________________
+3. frontend/Dockerfile.react
+dockerfile
+CopyEdit
+# Stage 1: build the React app
+FROM node:18 AS build
+
+WORKDIR /usr/src/app
+
+COPY frontend/package*.json ./
+RUN npm install
+
+COPY frontend/ .
+RUN npm run build
+
+# Stage 2: serve the build
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
+# Install a simple static server
+RUN npm install -g serve
+
+# Copy built files
+COPY --from=build /usr/src/app/build ./build
+
+# Expose the frontend port
+EXPOSE 3001
+
+# Serve the React build
+CMD ["serve", "-s", "build", "-l", "3001"]
+
+
+
+Here’s the complete docker-compose.yml you’ll need alongside the Dockerfiles:
+yaml
+CopyEdit
+version: '3.8'
+
+services:
+  tcpserver:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.tcpserver
+    ports:
+      - "5555:5555"
+    networks:
+      - internal
+
+  apiserver:
+    build:
+      context: .
+      dockerfile: api/Dockerfile.api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - tcpserver
+    networks:
+      - internal
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.react
+    ports:
+      - "3001:3001"
+    depends_on:
+      - apiserver
+    networks:
+      - internal
+
+networks:
+  internal:
+•	Services
+o	tcpserver: builds from backend/Dockerfile.tcpserver, exposing port 5555 for the C++ Bloom-filter TCP server.
+o	apiserver: builds from api/Dockerfile.api, exposing port 3000 for the Node.js API (depends on tcpserver).
+o	frontend: builds from frontend/Dockerfile.react, exposing port 3001 for the React web UI (depends on apiserver).
+•	Network
+All three share the internal network so they can communicate by service name (e.g., tcpserver:5555).
+Place this file at the root of your project as docker-compose.yml, then run:
+bash
+CopyEdit
+docker-compose --env-file ./config/.env.local up --build
+to build and launch all three containers together.
+
+
