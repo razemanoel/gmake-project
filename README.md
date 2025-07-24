@@ -87,66 +87,124 @@ CONNECTION_STRING=mongodb://host.docker.internal:27017
 JWT_SECRET="Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5"
 
 # React frontend
+
 REACT_APP_API_URL=http://localhost:${APP_PORT}
+
 REACT_PORT=3001
+
 3. Build & Launch with Docker Compose
+   
 Your docker-compose.yml (v3.8) will build and start:
+
 • tcpserver (C++ service) → TCP port 5555
+
 • apiserver (Node.js API) → HTTP port 3000
+
 • frontend (React web UI) → HTTP port 3001
+
 Run:
+
 docker-compose --env-file ./config/.env.local up --build
+
 Wait until all containers are healthy.
+
 Verify:
+
 TCP server at localhost:5555
+
 API at http://localhost:3000
+
 Web UI at http://localhost:3001
 
+
 Docker Compose will:
+
 1. Parse docker-compose.yml to know which services to bring up.
-2. Load every KEY=VALUE pair from config/.env.local and inject them into each container’s environment.
-3. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
+   
+3. Load every KEY=VALUE pair from config/.env.local and inject them into each container’s environment.
+   
+5. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
+   
 
 
 To stop and remove containers:
+
 docker-compose down
+
 4. Run Services Individually
+   
 If you prefer to inspect logs or develop a single component:
+
 A. C++ TCP Server:
+
 cd backend
+
 mkdir -p build && cd build
+
 cmake ..
+
 make
+
 ./tcpserver ${TCP_PORT}
+
 B. Node.js API Server:
+
 cd api
+
 npm install
+
 npm run dev   # or npm start
+
 Visit http://localhost:${APP_PORT}
+
 Expects the TCP server on ${TCP_PORT}
+
 Connects to MongoDB at ${CONNECTION_STRING}
+
 C. React Frontend:
+
 cd frontend
+
 npm install
+
 npm start
+
 Opens in browser at http://localhost:${REACT_PORT}
+
 Uses API base URL: ${REACT_APP_API_URL}
-5. Configure & Run the Android App
+
+6. Configure & Run the Android App
+   
 Open Android Studio → Open an Existing Project → select the android/ folder.
+
 Create app/src/main/res/raw/config.properties with:
+
 ip_address=10.0.2.2       # emulator → host machine; or your LAN IP on device
+
 port=${APP_PORT}          # e.g. 3000
+
 jwt_secret=${JWT_SECRET}
+
 Update res/xml/network_security_config.xml:
+
 <?xml version="1.0" encoding="utf-8"?>
+
 <network-security-config>
+   
   <domain-config cleartextTrafficPermitted="true">
+     
     <domain includeSubdomains="true">10.0.2.2</domain>
+    
   </domain-config>
+  
 </network-security-config>
+
 Run the app on an emulator or physical device. It will connect to:
+
 API at ${APP_PORT}
+
 TCP service at ${TCP_PORT}
+
 
 
 
