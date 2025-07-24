@@ -80,7 +80,7 @@ CONTAINER_PORT=3000
 # C++ TCP (Bloom filter) server
 TCP_PORT=5555
 
-# MongoDB connection (Raz set up)
+# MongoDB connection
 CONNECTION_STRING=mongodb://host.docker.internal:27017
 
 # JWT signing secret
