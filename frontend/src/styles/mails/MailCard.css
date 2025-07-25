@@ -1,5 +1,7 @@
 .mail-card {
   padding: 16px;
+    display: flex;
+  flex-direction: line;
   margin-bottom: 12px;
   background: #fff;
   border-radius: 8px;
@@ -10,12 +12,12 @@
   overflow: visible;
 }
 
-.mail-card.read {
-  background-color: #f9f9f9;
+.mail-card.unread {
+  background-color: #ffffff;
 }
 
-.mail-card.unread {
-  background-color: #e3f2fd;
+.mail-card.read {
+  background-color: #f0f0f0;
 }
 
 .dark-mode .mail-card {
