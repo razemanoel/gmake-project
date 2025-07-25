@@ -44,7 +44,9 @@ Registration also allows users to upload an optional profile picture.
 ### 3. Inbox View
 The inbox displays all received emails.  
 Each email shows its subject, sender, timestamp, and action icons (e.g. star, delete).  
-Users can toggle between light and dark mode.
+Users can toggle between light and dark mode.  
+In the side menu, users can **filter emails by label** — clicking a label will display only the mails associated with it.
+
 
 <p align="center">
   <img src="webDoc/inbox_screen.png" alt="Inbox Light Mode" width="600"/>
