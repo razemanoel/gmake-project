@@ -27,20 +27,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     private UserRepository userRepository;
 
-    // שמירת ה-URI של הקובץ שנבחר
     private Uri selectedImageUri = null;
 
-    // ActivityResultLauncher לפתיחת גלריה
     private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
 
-                    // במקום setImageURI:
                     Glide.with(this)
                             .load(uri)
-                            .placeholder(R.drawable.ic_profile) // רק אם יש לך ברירת מחדל
+                            .placeholder(R.drawable.ic_profile) 
                             .circleCrop()
                             .into(imagePreview);
                 }
@@ -62,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         imagePreview = findViewById(R.id.imagePreview);
 
-        // עיצוב קו תחתון לקישור
         String text = "Already have an account? Login";
         SpannableString content = new SpannableString(text);
         content.setSpan(new android.text.style.UnderlineSpan(), text.indexOf("Login"), text.length(), 0);
@@ -70,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         userRepository = new UserRepository(getApplicationContext());
 
-        // פתיחת גלריה
         buttonPickImage.setOnClickListener(v -> {
             pickImageLauncher.launch("image/*");
         });
@@ -91,7 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // קריאה ל-Repo כולל קובץ אם נבחר
             userRepository.register(username, password, name, selectedImageUri, this)
                     .observe(this, success -> {
                         if (success != null && success) {

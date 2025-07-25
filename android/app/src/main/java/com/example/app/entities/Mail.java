@@ -32,7 +32,7 @@ public class Mail {
     private String timestamp;
 
     @TypeConverters(MailLabelListConverter.class)
-    private List<MailLabel> labels;  // ✅ Only one definition here
+    private List<MailLabel> labels;  // Only one definition here
 
     public Mail() {}
 

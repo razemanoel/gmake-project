@@ -6,7 +6,7 @@ import android.util.Log;
 import com.example.app.auth.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;    // ← added import
+import okhttp3.logging.HttpLoggingInterceptor;    
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,14 +26,14 @@ public class RetrofitClient {
             Log.d("RetrofitClient", "Creating new AUTHENTICATED Retrofit instance with baseUrl: " + baseUrl);
             currentBaseUrl = baseUrl;
 
-            // 1️⃣ Create and configure logging interceptor
+            //  Create and configure logging interceptor
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Log.d("HTTP", message));
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // 2️⃣ Build OkHttpClient with Auth + Logging
+            //  Build OkHttpClient with Auth + Logging
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(new AuthInterceptor(context))
-                    .addInterceptor(logging)            // ← added logging
+                    .addInterceptor(logging)            
                     .build();
 
             authRetrofit = new Retrofit.Builder()
@@ -51,12 +51,11 @@ public class RetrofitClient {
             Log.d("RetrofitClient", "Creating new UNAUTHENTICATED Retrofit instance with baseUrl: " + baseUrl);
             currentBaseUrl = baseUrl;
 
-            // also add logging here if desired
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Log.d("HTTP", message));
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(logging)            // ← added logging
+                    .addInterceptor(logging)           
                     .build();
 
             unauthRetrofit = new Retrofit.Builder()

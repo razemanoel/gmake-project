@@ -37,7 +37,7 @@ public class MailRepository {
         this.sessionManager = new SessionManager(context);
     }
 
-    // ✅ Get inbox using JWT token
+    //  Get inbox using JWT token
     public LiveData<List<Mail>> getInbox() {
         MutableLiveData<List<Mail>> liveData = new MutableLiveData<>();
         String token = sessionManager.getToken();
@@ -63,13 +63,13 @@ public class MailRepository {
         return liveData;
     }
 
-    // ✅ Send mail using JWT token
+    // Send mail using JWT token
     public void sendMail(Mail mail, Callback<ResponseBody> callback) {
         String token = sessionManager.getToken();
         mailApi.createMail(mail, "Bearer " + token).enqueue(callback);
     }
 
-    // ✅ Get a single mail by ID
+    // Get a single mail by ID
     public LiveData<Mail> getMailById(int mailId) {
         MutableLiveData<Mail> liveData = new MutableLiveData<>();
         String token = sessionManager.getToken();
@@ -210,7 +210,7 @@ public class MailRepository {
                 .enqueue(cb);
     }
 
-    // ✅ Permanently delete a mail
+    //  Permanently delete a mail
     public void deleteMail(int mailId, Callback<Void> callback) {
         String token = sessionManager.getToken();
         mailApi.deleteMail("Bearer " + token, mailId)

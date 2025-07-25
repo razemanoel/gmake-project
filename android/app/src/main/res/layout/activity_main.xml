@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- תוכן ראשי -->
+    <!-- Main -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/appBackground">
 
-        <!-- Toolbar עם שורת חיפוש -->
+        <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
 
 
 
-        <!-- כאן נטען ה־Fragment שלך -->
+        <!-- fragment -->
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
 
     </LinearLayout>
 
-    <!-- תפריט צד -->
+    <!-- side bar -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

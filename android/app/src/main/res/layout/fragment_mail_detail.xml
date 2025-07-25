@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <!-- 🔙 Toolbar לבן עם כפתור חזור בלבד -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         app:title=""
         app:titleTextColor="@android:color/black" />
 
-    <!-- 📧 Mail content -->
+    <!-- Mail content -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,7 +84,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- 🔼 Action Buttons -->
+    <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
