@@ -1,4 +1,3 @@
-
 # Gmail Android App Documentation
 
 ## Table of Contents
@@ -79,7 +78,25 @@ Users can:
 
 ---
 
-### 6. Label Management
+### 6. Edit Draft Email
+- Draft mails are displayed in the inbox with a timestamp.
+- When a user taps on a draft, it opens the **Compose Mail screen** with:
+  - Pre-filled "To" field
+  - Pre-filled "Subject" field
+  - Pre-filled body (if any)
+- The user can then continue editing and either **send** the mail or **save** it again.
+
+<p align="center">
+  <img src="androidDoc/draft_in_inbox.png" alt="Draft in Inbox" width="300"/>
+</p>
+
+<p align="center">
+  <img src="androidDoc/draft_open_compose.png" alt="Opened Draft in Compose" width="300"/>
+</p>
+
+---
+
+### 7. Label Management
 - Users can add or remove custom labels from a mail.
 
 <p align="center">
@@ -88,7 +105,7 @@ Users can:
 
 ---
 
-### 7. Navigation Drawer
+### 8. Navigation Drawer
 - Built-in labels available:
   - Inbox
   - Sent
@@ -105,7 +122,7 @@ Users can:
 
 ---
 
-### 8. Add New Label
+### 9. Add New Label
 - Users can define a new label name and add it to the system.
 
 <p align="center">
@@ -114,7 +131,7 @@ Users can:
 
 ---
 
-### 9. Search Emails
+### 10. Search Emails
 - Users can search mails by content, sender, or subject.
 - Results are filtered live.
 
@@ -124,7 +141,7 @@ Users can:
 
 ---
 
-### 10. Profile & Logout
+### 11. Profile & Logout
 - Clicking the profile image opens a menu with profile details and logout option.
 
 <p align="center">
