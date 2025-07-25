@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- עיגול פרופיל -->
     <ImageView
         android:id="@+id/imageProfile"
         android:layout_width="72dp"
@@ -20,7 +19,6 @@
         android:padding="4dp"
         android:layout_marginBottom="12dp"/>
 
-    <!-- שם -->
     <TextView
         android:id="@+id/textProfileName"
         android:layout_width="match_parent"
@@ -30,7 +28,6 @@
         android:textStyle="bold"
         android:gravity="center"/>
 
-    <!-- שם משתמש -->
     <TextView
         android:id="@+id/textProfileUsername"
         android:layout_width="match_parent"
@@ -41,7 +38,6 @@
         android:gravity="center"
         android:layout_marginTop="2dp"/>
 
-    <!-- פס מפריד -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -49,7 +45,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"/>
 
-    <!-- כפתור התנתקות -->
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"

@@ -17,7 +17,7 @@ public class MailViewModel extends ViewModel {
         this.mailRepository = repository;
     }
 
-    // ✅ Used in InboxFragment
+    // Used in InboxFragment
     public LiveData<List<Mail>> getInbox() {
         return mailRepository.getInbox(); // no userId needed
     }

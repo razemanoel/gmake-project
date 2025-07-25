@@ -52,12 +52,11 @@ public class UserRepository {
     }
 
     /**
-     * גרסה חדשה — תומכת Multipart כולל קובץ
      *
-     * @param username שם משתמש
-     * @param password סיסמה
-     * @param name     שם מלא
-     * @param avatarFileUri Uri של קובץ התמונה שנבחר במכשיר
+     * @param username 
+     * @param password 
+     * @param name     
+     * @param avatarFileUri 
      */
     public LiveData<Boolean> register(String username, String password, String name, Uri avatarFileUri, Context context) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();

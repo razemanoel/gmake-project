@@ -81,7 +81,7 @@ public class MailDetailFragment extends Fragment {
                 }
         );
 
-        // 1️⃣ Init Repo
+        // Init Repo
         repo = new MailRepository(requireContext());
         labelRepo = new LabelRepository(
                 RetrofitClient.getAuthenticatedInstance(requireContext())
@@ -90,7 +90,7 @@ public class MailDetailFragment extends Fragment {
         );
 
 
-        // 2️⃣ Find Views
+        // Find Views
         deleteButton  = view.findViewById(R.id.deleteButton);
         starButton    = view.findViewById(R.id.starButton);
         spamButton    = view.findViewById(R.id.spamButton);
@@ -114,7 +114,7 @@ public class MailDetailFragment extends Fragment {
         bodyTextView      = view.findViewById(R.id.textBody);
         labelsContainer   = view.findViewById(R.id.labelsContainer);
 
-        // 3️⃣ Deserialize Mail
+        //  Deserialize Mail
         if (getArguments() == null || !getArguments().containsKey("mail")) {
             Log.e(TAG, "No mail in arguments");
             return view;
@@ -128,7 +128,7 @@ public class MailDetailFragment extends Fragment {
             restoreContainer.setVisibility(View.GONE);
         }
 
-        // 4️⃣ Populate UI & labels
+        //  Populate UI & labels
         subjectTextView.setText(currentMail.getSubject());
         fromTextView.setText("From: " + currentMail.getFromUsername());
         toTextView.setText("To: " + currentMail.getToUsername());
@@ -137,7 +137,7 @@ public class MailDetailFragment extends Fragment {
         bodyTextView.setText(currentMail.getBody());
         displayLabels(currentMail.getLabels());
 
-        // 5️⃣ Auto-mark as “read” if it was unread
+        //  Auto-mark as “read” if it was unread
         if (hasLabel("unread")) {
             repo.toggleReadMail(currentMail, new Callback<Void>() {
                 @Override public void onResponse(Call<Void> c, Response<Void> r) {
@@ -156,7 +156,7 @@ public class MailDetailFragment extends Fragment {
             });
         }
 
-        // 6️⃣ Button callbacks
+        //  Button callbacks
         deleteButton.setOnClickListener(v -> trashOrDelete());
         restoreButton.setOnClickListener(v -> restoreMail());
         starButton.setOnClickListener(v ->
@@ -224,12 +224,10 @@ public class MailDetailFragment extends Fragment {
                 if (r.isSuccessful()) {
                     Toast.makeText(getContext(), "Mail restored", Toast.LENGTH_SHORT).show();
 
-                    // ✅ עדכן את האינבוקס
                     Bundle result = new Bundle();
                     result.putBoolean("shouldRefresh", true);
                     getParentFragmentManager().setFragmentResult("inboxRefresh", result);
 
-                    // ✅ חזור אחורה למסך הקודם
                     requireActivity().getSupportFragmentManager().popBackStack();
 
                 } else {

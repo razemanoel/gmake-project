@@ -23,19 +23,19 @@ import retrofit2.http.Query;
 
 public interface MailAPI {
 
-    // ✅ GET /api/mails (inbox)
+    //  GET /api/mails (inbox)
     @GET("mails")
     Call<List<Mail>> getInbox(@Header("Authorization") String token);
 
-    // ✅ GET /api/mails/search/:query
+    //  GET /api/mails/search/:query
     @GET("mails/search/{query}")
     Call<List<Mail>> searchMails(@Header("Authorization") String token, @Path("query") String query);
 
-    // ✅ GET /api/mails/:id
+    // GET /api/mails/:id
     @GET("mails/{id}")
     Call<Mail> getMailById(@Header("Authorization") String token, @Path("id") int mailId);
 
-    // ✅ POST /api/mails
+    //  POST /api/mails
     // AFTER
     @POST("mails")
     Call<ResponseBody> createMail(@Body Mail mail, @Header("Authorization") String token);
@@ -45,7 +45,7 @@ public interface MailAPI {
 
 
 
-    // ✅ PATCH /api/mails/:id
+    //  PATCH /api/mails/:id
     @PATCH("mails/{id}")
     Call<Void> updateMailLabels(
             @Header("Authorization") String token,

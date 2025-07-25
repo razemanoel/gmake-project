@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Search
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("Search mails…");
         searchView.setIconified(true);
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // פרופיל
         ImageView profileIcon = findViewById(R.id.profileIcon);
         AvatarLoader.loadAvatar(this, profileIcon, sessionManager.getAvatarUrl());
 
@@ -106,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 ProfilePopupHelper.showProfilePopup(this, profileIcon, sessionManager)
         );
 
-        // טעינת Inbox ברירת מחדל
         if (savedInstanceState == null) {
             Bundle bundle = new Bundle();
             bundle.putString("labelId", "received");

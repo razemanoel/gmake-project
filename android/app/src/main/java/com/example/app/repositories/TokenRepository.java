@@ -27,7 +27,7 @@ public class TokenRepository {
     private final Context context;
 
     public TokenRepository(Context context) {
-        this.context = context; // שמור רפרנס לקונטקסט לשימוש בהמשך
+        this.context = context; 
         tokenAPI = RetrofitClient.getUnauthenticatedInstance(context).create(TokenAPI.class);
         sessionManager = new SessionManager(context);
     }
@@ -58,9 +58,8 @@ public class TokenRepository {
 
                     Log.d("TokenRepository", "Decoded userId from token: " + userId);
 
-                    // קריאה ל-UserAPI כדי לקבל את ה-name
                     UserAPI userAPI = RetrofitClient.getAuthenticatedInstance(context).create(UserAPI.class);
-                    int finalUserId = userId; // כי צריך final ב-inner class
+                    int finalUserId = userId; 
                     userAPI.getUserById(userId).enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> userResponse) {
