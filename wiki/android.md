@@ -79,11 +79,9 @@ Users can:
 ---
 
 ### 6. Edit Draft Email
-- Draft mails are displayed in the inbox with a timestamp.
-- When a user taps on a draft, it opens the **Compose Mail screen** with:
-  - Pre-filled "To" field
-  - Pre-filled "Subject" field
-  - Pre-filled body (if any)
+- Draft mails are displayed in the draft's inbox with a timestamp.
+- When a user taps on a draft, it opens the **Compose Mail screen** with any fields that were previously filled:
+  - For example, if only the subject was entered, only that field will be pre-filled.
 - The user can then continue editing and either **send** the mail or **save** it again.
 
 <p align="center">
