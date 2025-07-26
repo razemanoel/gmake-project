@@ -97,7 +97,7 @@ async createMail(req, res) {
       return res.status(400).json({ error: 'Cannot save empty draft' });
     }
 
-    const mail = await mailService.createMail({
+    const { senderCopy } = await mailService.createMail({
       fromUserId,
       subject,
       body,
@@ -105,7 +105,7 @@ async createMail(req, res) {
     });
 
     return res.status(201).json({
-      ...mail,
+      ...senderCopy,
       fromUsername: sender?.username || '',
       toUsername: ''
     });
@@ -136,29 +136,29 @@ async createMail(req, res) {
     }
   }
 
-  const mail = await mailService.createMail({ fromUserId, toUserId, subject, body });
+  const { senderCopy, recipientCopy } = await mailService.createMail({ fromUserId, toUserId, subject, body });
 
-  if (containsBlacklisted) {
+  console.log('containsBlacklisted:', containsBlacklisted);
+
+  if (containsBlacklisted && recipientCopy) {
     const recipientLabels = await labelService.getAllLabels(toUserId);
+    console.log('📌 recipientLabels:', recipientLabels.map(l => l.id));
+
     const spamLabel = recipientLabels.find(l => l.name.toLowerCase() === 'spam');
+    console.log('📌 spamLabel:', spamLabel);
 
     if (spamLabel) {
-      const recipientCopyId = mail.id + 1;
-      const recipientCopy = await MailService.getMailById(recipientCopyId)
-
-      if (recipientCopy) {
-        await mailService.addLabelToMail(toUserId, recipientCopy.id, spamLabel.id);
-      }
+      await mailService.addLabelToMail(toUserId, recipientCopy.id, spamLabel.id);
+      console.log('✅ spam label added to recipient copy');
     }
   }
 
   return res.status(201).json({
-    ...mail,
+    ...senderCopy,
     fromUsername: sender?.username || '',
     toUsername: recipient?.username || ''
   });
 }
-
 
 
 async getMailById(req, res) {
@@ -247,17 +247,25 @@ async updateMail(req, res) {
         return res.status(400).json({ error: 'Invalid label ID(s)' });
       }
 
-      const hadSpamBefore = mail.labels?.includes(spamLabel?.id);
-      const hasSpamNow = updateFields.labels.includes(spamLabel?.id);
+     let hadSpamBefore = false;
+    let hasSpamNow = false;
+
+    if (spamLabel) {
+      const spamId = spamLabel.id;
+      hadSpamBefore = (mail.labels || []).includes(spamId);
+      hasSpamNow = (updateFields.labels || []).includes(spamId);
+    }
+
 
       const urls = [
         ...(mail.subject ? extractUrls(mail.subject) : []),
         ...(mail.body ? extractUrls(mail.body) : [])
       ];
 
-      if (!hadSpamBefore && hasSpamNow) {
+      if (spamLabel && !hadSpamBefore && hasSpamNow) {
         for (const url of urls) {
           try {
+             console.log('✅ Adding URLs to blacklist');
             await sendTcpCommand(`POST ${url}`);
             await blacklistService.addUrl(url);
           } catch (err) {
@@ -265,16 +273,18 @@ async updateMail(req, res) {
           }
         }
       } else if (hadSpamBefore && !hasSpamNow) {
-        for (const [id, url] of blacklistService.urlMap.entries()) {
-          if (urls.includes(url)) {
-            try {
+        for (const url of urls) {
+          try {
+            const entry = await blacklistService.getByUrl(url);
+            if (entry) {
               await sendTcpCommand(`DELETE ${url}`);
-              await blacklistService.deleteUrlById(id);
-            } catch (err) {
-              console.warn(`Failed to remove URL from blacklist: ${url}`, err.message);
+              await blacklistService.deleteUrlById(entry._id); 
             }
+          } catch (err) {
+            console.warn(`Failed to remove URL from blacklist: ${url}`, err.message);
           }
-        }
+      }
+
       }
 
       const updated = await mailService.updateMail(userId, mailId, { labels: updateFields.labels });

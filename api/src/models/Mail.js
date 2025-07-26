@@ -6,8 +6,8 @@ const mailSchema = new Schema({
   fromUserId: { type: Number, required: true },
   toUserId: { type: Number },
   ownId: { type: Number, required: true },
-  subject: { type: String, required: true },
-  body: { type: String, required: true },
+  subject: { type: String},
+  body: { type: String},
   timestamp: { type: Date, default: Date.now },
   labels: [{ type: String }], 
   isDraft: { type: Boolean, default: false }

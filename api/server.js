@@ -3,10 +3,10 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const app = require('./app');
 
-// Load environment variables from config/.env.local
-dotenv.config({ path: path.join(__dirname, 'config', '.env.local') });
+// Load environment variables from the root-level config/.env.local
+dotenv.config({ path: path.resolve(__dirname, '..', 'config', '.env.local') });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.API_PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {

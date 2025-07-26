@@ -23,6 +23,14 @@ class BlacklistService {
       return null;
     }
   }
+  async getByUrl(url) {
+  try {
+    return await Blacklist.findOne({ url }).lean();
+  } catch {
+    return null;
+  }
+}
+
 
   async deleteUrlById(id) {
     try {
@@ -32,17 +40,17 @@ class BlacklistService {
       return false;
     }
   }
-
-  async checkUrl(url) {
-    try {
-      const rawResponse = await sendTcpCommand(`GET ${url}`);
-      const lines = rawResponse.split('\n').map(line => line.trim());
-      return lines.includes('true true');
-    } catch (err) {
-      console.error(`Blacklist check failed for ${url}:`, err.message);
-      return false;
-    }
+async checkUrl(url) {
+  try {
+    const rawResponse = await sendTcpCommand(`GET ${url}`);
+    console.log(`🧪 GET ${url} →`, JSON.stringify(rawResponse));
+    const lines = rawResponse.split('\n').map(line => line.trim());
+    return lines.includes('true true');
+  } catch (err) {
+    console.error(`Blacklist check failed for ${url}:`, err.message);
+    return false;
   }
+}
 }
 
 module.exports = new BlacklistService();

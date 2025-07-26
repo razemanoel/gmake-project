@@ -37,7 +37,7 @@ async createMail({ fromUserId, toUserId, subject, body, isDraft = false }) {
   const mail = new Mail({
     id: nextId,
     fromUserId,
-    toUserId: isDraft ? fromUserId : toUserId,
+    toUserId,
     ownId: fromUserId,
     subject,
     body,
@@ -48,10 +48,13 @@ async createMail({ fromUserId, toUserId, subject, body, isDraft = false }) {
 
   await mail.save();
 
+  let recipientMail = null;
+
   // Create recipient's copy only if not a draft and not self-sent
   if (!isDraft && fromUserId !== toUserId) {
-    const recipientMail = new Mail({
-      id: await getNextSequence('mail'),
+    const recipientId = await getNextSequence('mail');
+    recipientMail = new Mail({
+      id: recipientId,
       fromUserId,
       toUserId,
       ownId: toUserId,
@@ -65,7 +68,10 @@ async createMail({ fromUserId, toUserId, subject, body, isDraft = false }) {
     await recipientMail.save();
   }
 
-  return mail.toJSON(); // always return sender's copy as plain object
+  return {
+    senderCopy: mail.toJSON(),
+    recipientCopy: recipientMail?.toJSON() || null
+  };
 }
 
 
