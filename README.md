@@ -73,24 +73,30 @@ Gmail-Style Application: Setup & Run Guide
 mkdir -p config
 touch config/.env.local
 Open config/.env.local in your editor and paste:
-# Node.js API server
-APP_PORT=3000
-CONTAINER_PORT=3000
-
-# C++ TCP (Bloom filter) server
-TCP_PORT=5555
-
-# MongoDB connection
-CONNECTION_STRING=mongodb://host.docker.internal:27017
-
-# JWT signing secret
+#  Node.js API Server
+API_PORT=3000              
 JWT_SECRET="Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5"
 
-# React frontend
+#  React Frontend 
+FRONTEND_PORT=3001       
+REACT_APP_API_URL=http://localhost:3000 
 
-REACT_APP_API_URL=http://localhost:${APP_PORT}
+#  C++ TCP Blacklist Server 
+TCP_PORT=5555               
 
-REACT_PORT=3001
+# MongoDB 
+MONGO_URI=mongodb://mongodb_service:27017 
+MONGO_DATA_PATH=/data/db    
+
+ **Explanation of the variables:**
+
+- **API_PORT**: Defines the port on your local machine (host) to access the Node.js server.This can be customized as needed during setup.
+- **FRONTEND_PORT**: Defines the porton your local machine (host) to access the React web app.This can be customized as needed during setup.
+- **TCP_PORT**: Defines the port where the C++ TCP Bloom-filter server listens for blacklist/spam checks. This can be customized as needed during setup.
+- **MONGO_URI**: The full connection string for the MongoDB instance, used by the API server to persist user, mail, and label data.
+- **MONGO_DATA_PATH**: Path inside the MongoDB container where the data will be stored. Used as a mount point for Docker volumes.
+- **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
+- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{APP_PORT} )
 
 3. Build & Launch with Docker Compose
    
@@ -101,6 +107,8 @@ Your docker-compose.yml (v3.8) will build and start:
 • apiserver (Node.js API) → HTTP port 3000
 
 • frontend (React web UI) → HTTP port 3001
+
+• mongodb_service (MongoDB container) → port 27017
 
 Run:
 
