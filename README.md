@@ -31,7 +31,7 @@ For detailed explanations of features, components, and usage examples, please re
 
 ### Core Components
 
-How It All Fits Together
+How It All Fits Together:
 1.	Client Layer
 o	The React web app and the Android app both communicate over HTTP with the Node.js API.
 2.	API Layer
