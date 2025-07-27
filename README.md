@@ -27,6 +27,10 @@ The system supports core Gmail-like functionality, including:
 For detailed explanations of features, components, and usage examples, please refer to the project **Wiki**.  
 
 
+## Project Architecture
+
+### Core Components
+
 How It All Fits Together
 1.	Client Layer
 o	The React web app and the Android app both communicate over HTTP with the Node.js API.
@@ -42,13 +46,14 @@ o	Docker Compose orchestrates all components (TCP service, API server, React UI)
 
 
 
+### Project Structure
 
-•  backend/: C++ TCP server (Bloom filter)
-•  api/: the Node.js/Express server talking to MongoDB and the C++ service
-•  frontend/: React app that talks to the API
-•  android/: the Android Studio project for the mobile client
-•  config/.env.local: overridable env‐vars (ports, secrets, connection strings)
-•  docker-compose.yml: builds & links the three Docker images into a single, live system.
+- **backend/**: C++ TCP server (Bloom filter)
+- **api/**: the Node.js/Express server talking to MongoDB and the C++ service
+- **frontend/**: React app that talks to the API
+- **android/**: the Android Studio project for the mobile client
+- **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
+- **docker-compose.yml**: builds & links the three Docker images into a single, live system
 
 
 
