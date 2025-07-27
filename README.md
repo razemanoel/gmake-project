@@ -56,23 +56,31 @@ o	Docker Compose orchestrates all components (TCP service, API server, React UI)
 
 
 
-Gmail-Style Application: Setup & Run Guide
+# 📧 Gmail-Style Application: Setup & Run Guide
 
--Clone the Repository
+## 🚀 Getting Started
+
+### 1. Clone the Repository
    
--Open terminal and run:
+Open terminal and run:
 
--git clone https://github.com/razemanoel/EX-5.git
+```bash
+git clone https://github.com/razemanoel/EX-5.git
+cd the-repo
+```
 
--cd the-repo
+### 2. Create Environment Configuration
 
--Create Environment Configuration
+Create a new folder and file for environment variables:
 
--Create a new folder and file for environment variables:
-
+```bash
 mkdir -p config
 touch config/.env.local
-Open config/.env.local in your editor and paste:
+```
+
+Open `config/.env.local` in your editor and paste:
+
+```bash
 #  Node.js API Server
 API_PORT=3000              
 JWT_SECRET="Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5"
@@ -87,8 +95,9 @@ TCP_PORT=5555
 # MongoDB 
 MONGO_URI=mongodb://mongodb_service:27017 
 MONGO_DATA_PATH=/data/db    
+```
 
- **Explanation of the variables:**
+#### 📋 **Explanation of the variables:**
 
 - **API_PORT**: Defines the port on your local machine (host) to access the Node.js server.This can be customized as needed during setup.
 - **FRONTEND_PORT**: Defines the porton your local machine (host) to access the React web app.This can be customized as needed during setup.
@@ -98,133 +107,123 @@ MONGO_DATA_PATH=/data/db
 - **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
 - **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{APP_PORT} )
 
-3. Build & Launch with Docker Compose
+## 🐳 Docker Setup
+
+### 3. Build & Launch with Docker Compose
    
 Your docker-compose.yml (v3.8) will build and start:
 
-• tcpserver (C++ service) → TCP port 5555
-
-• apiserver (Node.js API) → HTTP port 3000
-
-• frontend (React web UI) → HTTP port 3001
-
-• mongodb_service (MongoDB container) → port 27017
+• **tcpserver** (C++ service) → TCP port 5555  
+• **apiserver** (Node.js API) → HTTP port 3000  
+• **frontend** (React web UI) → HTTP port 3001  
+• **mongodb_service** (MongoDB container) → port 27017  
 
 Run:
 
+```bash
+CopyEdit
 docker-compose --env-file ./config/.env.local up --build
+```
 
 Wait until all containers are healthy.
 
-Verify:
+#### ✅ Verify:
 
-TCP server at localhost:5555
-
-API at http://localhost:3000
-
-Web UI at http://localhost:3001
-
+- TCP server at localhost:5555
+- API at http://localhost:3000
+- Web UI at http://localhost:3001
 
 Docker Compose will:
 
 1. Parse docker-compose.yml to know which services to bring up.
-   
-3. Load every KEY=VALUE pair from config/.env.local and inject them into each container’s environment.
-   
-5. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
-   
+2. Load every KEY=VALUE pair from config/.env.local and inject them into each container's environment.
+3. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
 
+#### 🛑 To stop and remove containers:
 
-To stop and remove containers:
-
+```bash
 docker-compose down
+```
 
-4. Run Services Individually
+## ⚙️ Individual Service Setup
+
+### 4. Run Services Individually
    
 If you prefer to inspect logs or develop a single component:
 
-A. C++ TCP Server:
+#### A. C++ TCP Server:
 
+```bash
 cd backend
-
 mkdir -p build && cd build
-
 cmake ..
-
 make
-
 ./tcpserver ${TCP_PORT}
+```
 
-B. Node.js API Server:
+#### B. Node.js API Server:
 
+```bash
 cd api
-
 npm install
-
 npm run dev   # or npm start
+```
 
 Visit http://localhost:${APP_PORT}
 
-Expects the TCP server on ${TCP_PORT}
+- Expects the TCP server on ${TCP_PORT}
+- Connects to MongoDB at ${CONNECTION_STRING}
 
-Connects to MongoDB at ${CONNECTION_STRING}
+#### C. React Frontend:
 
-C. React Frontend:
-
+```bash
 cd frontend
-
 npm install
-
 npm start
+```
 
-Opens in browser at http://localhost:${REACT_PORT}
+- Opens in browser at http://localhost:${REACT_PORT}
+- Uses API base URL: ${REACT_APP_API_URL}
 
-Uses API base URL: ${REACT_APP_API_URL}
+## 📱 Android Configuration
 
-6. Configure & Run the Android App
+### 6. Configure & Run the Android App
    
 Open Android Studio → Open an Existing Project → select the android/ folder.
 
-Create app/src/main/res/raw/config.properties with:
+Create `app/src/main/res/raw/config.properties` with:
 
+```properties
 ip_address=10.0.2.2       # emulator → host machine; or your LAN IP on device
-
 port=${APP_PORT}          # e.g. 3000
-
 jwt_secret=${JWT_SECRET}
+```
 
-Update res/xml/network_security_config.xml:
+Update `res/xml/network_security_config.xml`:
 
+```xml
 <?xml version="1.0" encoding="utf-8"?>
-
 <network-security-config>
-   
   <domain-config cleartextTrafficPermitted="true">
-     
     <domain includeSubdomains="true">10.0.2.2</domain>
-    
   </domain-config>
-  
 </network-security-config>
+```
 
 Run the app on an emulator or physical device. It will connect to:
 
-API at ${APP_PORT}
+- API at ${APP_PORT}
+- TCP service at ${TCP_PORT}
 
-TCP service at ${TCP_PORT}
+---
 
+## 🐋 Docker Configuration Files
 
+### Docker:
 
-
-
-
-
-
-
-Docker:
-1. backend/Dockerfile.tcpserver
-dockerfile
+#### 1. backend/Dockerfile.tcpserver
 CopyEdit
+```dockerfile
 # Stage 1: build the C++ TCP (Bloom-filter) server
 FROM gcc:latest AS builder
 
@@ -260,10 +259,11 @@ EXPOSE 5555
 
 # Default command: server <port> <other args if any>
 CMD ["./server", "5555", "16", "1"]
-________________________________________
-2. api/Dockerfile.api
-dockerfile
+```
+
+#### 2. api/Dockerfile.api
 CopyEdit
+```dockerfile
 FROM node:18
 
 # Create application directory
@@ -281,10 +281,11 @@ EXPOSE 3000
 
 # Start the server
 CMD ["node", "server.js"]
-________________________________________
-3. frontend/Dockerfile.react
-dockerfile
+```
+
+#### 3. frontend/Dockerfile.react
 CopyEdit
+```dockerfile
 # Stage 1: build the React app
 FROM node:18 AS build
 
@@ -312,12 +313,13 @@ EXPOSE 3001
 
 # Serve the React build
 CMD ["serve", "-s", "build", "-l", "3001"]
+```
 
+### Docker Compose Configuration
 
-
-Here’s the complete docker-compose.yml you’ll need alongside the Dockerfiles:
-yaml
+Here's the complete docker-compose.yml you'll need alongside the Dockerfiles:
 CopyEdit
+```yaml
 version: '3.8'
 
 services:
@@ -354,16 +356,32 @@ services:
 
 networks:
   internal:
-•	Services
-o	tcpserver: builds from backend/Dockerfile.tcpserver, exposing port 5555 for the C++ Bloom-filter TCP server.
-o	apiserver: builds from api/Dockerfile.api, exposing port 3000 for the Node.js API (depends on tcpserver).
-o	frontend: builds from frontend/Dockerfile.react, exposing port 3001 for the React web UI (depends on apiserver).
-•	Network
+```
+
+#### 📝 Services Overview:
+- **tcpserver**: builds from backend/Dockerfile.tcpserver, exposing port 5555 for the C++ Bloom-filter TCP server.
+- **apiserver**: builds from api/Dockerfile.api, exposing port 3000 for the Node.js API (depends on tcpserver).
+- **frontend**: builds from frontend/Dockerfile.react, exposing port 3001 for the React web UI (depends on apiserver).
+
+#### 🌐 Network:
 All three share the internal network so they can communicate by service name (e.g., tcpserver:5555).
-Place this file at the root of your project as docker-compose.yml, then run:
-bash
-CopyEdit
+
+Place this file at the root of your project as `docker-compose.yml`, then run:
+
+```bash
 docker-compose --env-file ./config/.env.local up --build
-to build and launch all three containers together.
+```
+
+---
+
+## 🎯 Quick Start Summary
+
+1. **Clone** the repository
+2. **Create** environment configuration
+3. **Build & Launch** with Docker Compose
+4. **Verify** all services are running
+5. **Configure** Android app (optional)
+
+
 
 
