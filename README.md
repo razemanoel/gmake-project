@@ -121,7 +121,7 @@ Your docker-compose.yml (v3.8) will build and start:
 Run:
 
 ```bash
-CopyEdit
+
 docker-compose --env-file ./config/.env.local up --build
 ```
 
@@ -222,7 +222,7 @@ Run the app on an emulator or physical device. It will connect to:
 ### Docker:
 
 #### 1. backend/Dockerfile.tcpserver
-CopyEdit
+
 ```dockerfile
 # Stage 1: build the C++ TCP (Bloom-filter) server
 FROM gcc:latest AS builder
@@ -262,7 +262,7 @@ CMD ["./server", "5555", "16", "1"]
 ```
 
 #### 2. api/Dockerfile.api
-CopyEdit
+
 ```dockerfile
 FROM node:18
 
@@ -284,7 +284,7 @@ CMD ["node", "server.js"]
 ```
 
 #### 3. frontend/Dockerfile.react
-CopyEdit
+
 ```dockerfile
 # Stage 1: build the React app
 FROM node:18 AS build
@@ -318,7 +318,7 @@ CMD ["serve", "-s", "build", "-l", "3001"]
 ### Docker Compose Configuration
 
 Here's the complete docker-compose.yml you'll need alongside the Dockerfiles:
-CopyEdit
+
 ```yaml
 version: '3.8'
 
