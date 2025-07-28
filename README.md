@@ -246,6 +246,8 @@ If you prefer to inspect logs or develop a single component, follow these detail
 - **API Server** depends on **TCP Server** and **MongoDB**
 - Start services in order: TCP Server → API Server → Frontend
 
+  <br>
+  
 ##  Android Configuration
 
 ### 5. Pre-requirements:
