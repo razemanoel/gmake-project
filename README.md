@@ -237,7 +237,7 @@ Update `res/xml/network_security_config.xml`:
 
 Run the app on an emulator or physical device. It will connect to:
 
-- API at ${APP_PORT}
+- API at ${API_PORT}
 - TCP service at ${TCP_PORT}
 
 ---
