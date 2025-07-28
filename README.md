@@ -4,8 +4,8 @@ In this final phase, we completed the entire project, covering both frontend and
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
 1. **C++ TCP server** - Manages a Bloom Filter-based blacklist system for URLs. Operates concurrently to handle multiple API requests via TCP sockets and persists data to file. 
 2. **Node.js API server** - Provides a robust RESTful API for user authentication, email operations, label management, and spam handling. Follows the MVC architecture with SOLID design principles and uses MongoDB for persistent storage.  
-3. **React frontend** - A responsive, Gmail-style web interface that connects to the central API and TCP services. Supports full mail functionality including inbox, compose, drafts, labels, spam detection, dark/light mode, and search.  
-4. **Android app** -  A native mobile client (MVVM + Retrofit + Room) that connects to the same backend servers. Mirrors the full mail functionality of the web app, including composing, editing drafts, applying/removing labels, spam filtering, and blacklist support.
+3. **React frontend** - A responsive, Gmail-style web interface built with React. Connects to the central API and TCP services to provide the full user experience via browser. 
+4. **Android app** -  A native mobile client (MVVM + Retrofit + Room) that connects to the same backend servers. Mirrors the full mail functionality of the web app.
       
 
 
@@ -23,8 +23,6 @@ The system supports core Gmail-like functionality, including:
 
   
 #### For detailed explanations of features, components, and usage examples, please refer to the project's [**wiki**](https://github.com/razemanoel/EX-5/tree/main/wiki).
-
-
 <br>
 
 
@@ -65,8 +63,6 @@ Gmail-Project/
 │
 └── docker-compose.yml       # Orchestrates all services
 ```
-
-
 <br>
 
 ##  Setup & Run Guide
@@ -111,21 +107,20 @@ MONGO_DATA_PATH=/data/db
 
 ####  **Explanation of the variables:**
 
-- **API_PORT**: Defines the port on your local machine (host) to access the Node.js server.This can be customized as needed during setup.
-- **FRONTEND_PORT**: Defines the porton your local machine (host) to access the React web app.This can be customized as needed during setup.
-- **TCP_PORT**: Defines the port where the C++ TCP Bloom-filter server listens for blacklist/spam checks. This can be customized as needed during setup.
-- **MONGO_URI**: The full connection string for the MongoDB instance, used by the API server to persist user, mail, and label data.
-- **MONGO_DATA_PATH**: Path inside the MongoDB container where the data will be stored. Used as a mount point for Docker volumes.
-- **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
-- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )
-
+- **API_PORT**: Defines the port on your local machine (host) to access the Node.js server.This can be customized as needed during setup.  
+- **FRONTEND_PORT**: Defines the porton your local machine (host) to access the React web app.This can be customized as needed during setup.  
+- **TCP_PORT**: Defines the port where the C++ TCP Bloom-filter server listens for blacklist/spam checks. This can be customized as needed during setup.  
+- **MONGO_URI**: The full connection string for the MongoDB instance, used by the API server to persist user, mail, and label data.  
+- **MONGO_DATA_PATH**: Path inside the MongoDB container where the data will be stored. Used as a mount point for Docker volumes.  
+- **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.  
+- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )  
   <br>
-
+  
 ## Docker Setup
 
 Once your `config/.env.local` file is ready, you can build and run all services using Docker Compose.
 
-### Build & Launch with Docker Compose
+### 3. Build & Launch with Docker Compose
 
 To build and launch all containers, run:
 
@@ -158,10 +153,6 @@ To stop and remove all running containers, run:
 ```bash
 docker-compose down
 ```
-
-
-
-
   <br>
 
 ##  Android Configuration
@@ -171,11 +162,11 @@ docker-compose down
  - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
 2. **Ensure Backend Services are Running**:
- - Make sure you have completed the Docker setup and all services are running:
- - TCP server at localhost:5555
- - API at http://localhost:3000
- - Web UI at http://localhost:3001
- - MongoDB service
+Make sure you have completed the Docker Setup and all backend services are up and running:
+- TCP server running at `Port 5555`  
+- API server available at `Port 3000`  
+- Web UI available at `http://localhost:3001`  
+- MongoDB service running internally in Docker (`mongodb_service`)
 
 ### Configuration Steps:
 
@@ -302,15 +293,5 @@ Once the app launches successfully, you should be able to access all Gmail-like 
 
 
 ---
-
-##  Quick Start Summary
-
-1. **Clone** the repository
-2. **Create** environment configuration
-3. **Build & Launch** with Docker Compose
-4. **Verify** all services are running
-5. **Configure** Android app
-
-
 
 
