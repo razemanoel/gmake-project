@@ -26,7 +26,6 @@ The system supports core Gmail-like functionality, including:
 - Mail search and filtering  
 - Soft and permanent deletion
 
-  <br>
 
   
 #### For detailed explanations of features, components, and usage examples, please refer to the project's [**wiki**](https://github.com/razemanoel/EX-5/tree/main/wiki).
