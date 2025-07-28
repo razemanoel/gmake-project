@@ -212,20 +212,85 @@ npm start
 
 ## 📱 Android Configuration
 
-### 6. Configure & Run the Android App
-   
-Open Android Studio → Open an Existing Project → select the android/ folder.
+### Prerequisites:
+1. **Install Android Studio**:
+   - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
-Create `app/src/main/res/raw/config.properties` with:
+2. **Ensure Backend Services are Running**:
+   - Make sure you have completed the Docker setup and all services are running:
+     - TCP server at localhost:5555
+     - API at http://localhost:3000
+     - Web UI at http://localhost:3001
+     - MongoDB service
+
+### Configuration Steps:
+
+#### 1. Open the Android Project:
+- Open **Android Studio**
+- Select **"Open an Existing Project"**
+- Navigate to and select the `android/` folder from your project directory
+
+#### 2. Create `config.properties` File:
+- In Android Studio, navigate to: `app/src/main/res/`
+- **Create a new directory** called `raw` (if it doesn't exist):
+  - Right-click on `res` → New → Directory → name it `raw`
+- **Create the configuration file**:
+  - Right-click on the `raw` directory → New → File → name it `config.properties`
+
+**Configure the following values based on your `config/.env.local` file:**
 
 ```properties
+# Replace ${API_PORT} and ${JWT_SECRET} with actual values from config/.env.local
 ip_address=10.0.2.2       # emulator → host machine; or your LAN IP on device
-port=${API_PORT}          # e.g. 3000
-jwt_secret=${JWT_SECRET}
+port=${API_PORT}          # Use the same value as API_PORT in config/.env.local (e.g. 3000)
+jwt_secret=${JWT_SECRET}  # Use the same value as JWT_SECRET in config/.env.local
 ```
 
-Update `res/xml/network_security_config.xml`:
+**ip_address**: Choose based on your setup:
+- **Android Emulator**: Use `10.0.2.2` (this refers to your host machine from the emulator)
+- **Physical Device**: Use your computer's local IP address
 
+**To find your local IP address:**
+- **Windows**:
+Open Command Prompt (Win + R, type cmd, press Enter)
+Run: ipconfig
+Look for **"IPv4 Address"** under your network adapter (Wi-Fi or Ethernet)
+Example output: IPv4 Address. . . . . . . . . . . : 192.168.1.242
+
+
+
+- **macOS**:
+
+Open Terminal
+Run: ifconfig
+Look for inet address under your network interface (typically en0 for Wi-Fi)
+Example output: inet 192.168.1.242 netmask 0xffffff00 broadcast 192.168.1.255
+
+
+- **Linux**:
+Open Terminal
+Run: ifconfig (or ip a for newer systems)
+Find inet address under your network interface (e.g., wlan0 for Wi-Fi)
+Example output: inet 192.168.1.242 netmask 255.255.255.0 broadcast 192.168.1.255
+
+**port**: Use the same value as `API_PORT` in your `config/.env.local` file (default: 3000)
+
+**jwt_secret**: Use the same value as `JWT_SECRET` in your `config/.env.local` file
+
+**Example with actual values:**
+
+```properties
+ip_address=10.0.2.2
+port=3000
+jwt_secret=Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5
+```
+
+#### 3. Update `network_security_config.xml`:
+- Navigate to: `app/src/main/res/xml/`
+- Open or create `network_security_config.xml`
+- **Update the file** with the correct IP addresses for network security permissions:
+
+**For Android Emulator:**
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -235,12 +300,54 @@ Update `res/xml/network_security_config.xml`:
 </network-security-config>
 ```
 
-Run the app on an emulator or physical device. It will connect to:
+**For Physical Device (replace with your local IP):**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">192.168.1.242</domain>  <!-- Replace with your actual local IP -->
+  </domain-config>
+</network-security-config>
+```
 
-- API at ${API_PORT}
-- TCP service at ${TCP_PORT}
+**For Both Emulator and Physical Device:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">10.0.2.2</domain>          <!-- For Android Emulator -->
+    <domain includeSubdomains="true">192.168.1.242</domain>     <!-- Replace with your local IP -->
+  </domain-config>
+</network-security-config>
+```
 
----
+### Running the Android Application:
+
+#### 4. Build and Run:
+1. **Ensure all Docker services are running** (from the Docker setup section)
+2. **In Android Studio**:
+   - Wait for the project to sync and build
+   - Connect an Android device via USB **OR** start an Android Virtual Device (AVD)
+   - Click the **"Run"** button (green play icon) or press `Shift + F10`
+   - Select your target device (emulator or physical device)
+
+#### 5. Verify Connection:
+The Android app will connect to:
+- **API server** at the configured IP and port (e.g., `10.0.2.2:3000`)
+- **TCP service** at port 5555 for spam/blacklist functionality
+
+**Note**: Make sure the values in `config.properties` match your `config/.env.local` file and that the IP addresses in `network_security_config.xml` correspond to your setup (emulator vs physical device).
+
+Once the app launches successfully, you should be able to access all Gmail-like functionality including:
+
+- User registration and login
+- Profile management
+- Email composition, sending, replying and forwarding
+- Draft saving and editing
+- Inbox, Sent, Drafts, Spam and Trash folders
+- Label creation, editing and assignment
+- Mail search and filtering
+- Soft and permanent deletion
 
 ## 🐋 Docker Configuration Files
 
