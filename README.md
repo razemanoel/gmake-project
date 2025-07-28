@@ -30,25 +30,21 @@ The system supports core Gmail-like functionality, including:
 
 ## Project Architecture
 
+- **Client Layer**  
+  The React web app and the Android app both communicate over HTTP with the Node.js API.
 
-### Core Components and How It All Fits Together:
+- **API Layer**  
+  The Node.js server handles data storage (MongoDB), business logic, and JWT-based authentication.  
+  For each spam/blacklist check, it opens a TCP connection to the Bloom-filter service.
 
+- **TCP Service**  
+  The C++ Bloom-filter server performs ultra-fast, memory-efficient blacklist checks and URL additions.
 
-### 1. **Client Layer**
-- The React web app and the Android app both communicate over HTTP with the Node.js API.
+- **Persistence**  
+  User accounts, emails, and labels are stored in MongoDB.
 
-### 2. **API Layer**
-- The Node.js server handles data storage (MongoDB), business logic, and JWT-based authentication.
-- For each spam/blacklist check, it opens a TCP connection to the Bloom-filter service.
-
-### 3. **TCP Service**
-- The C++ Bloom-filter server performs ultra-fast, memory-efficient blacklist checks and URL additions.
-
-### 4. **Persistence**
-- User accounts, emails, and labels are stored in MongoDB.
-
-### 5. **Dev & Deployment**
-- Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
+- **Dev & Deployment**  
+  Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
 
 <br>
