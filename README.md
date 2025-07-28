@@ -11,11 +11,12 @@ We have developed a fully functional Gmail-like email platform, available both a
 4. **Android app**  
    - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services
   
+     <br><br>  
      
 
 You can run the entire stack with Docker Compose or individually for development.
 
-<br><br>
+
 
 
 The system supports core Gmail-like functionality, including:
