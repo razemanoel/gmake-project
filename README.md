@@ -449,7 +449,7 @@ docker-compose --env-file ./config/.env.local up --build
 2. **Create** environment configuration
 3. **Build & Launch** with Docker Compose
 4. **Verify** all services are running
-5. **Configure** Android app (optional)
+5. **Configure** Android app
 
 
 
