@@ -211,9 +211,9 @@ If you prefer to inspect logs or develop a single component, follow these detail
    ```
 
 4. **Verify it's running**:
-   - Visit http://localhost:${API_PORT}
-   - The API expects the TCP server running on port ${TCP_PORT}
-   - Connects to MongoDB at ${CONNECTION_STRING}
+- Visit http://localhost:${API_PORT}
+- The API expects the TCP server running on port ${TCP_PORT}
+- Connects to MongoDB at ${CONNECTION_STRING}
 
 **What to expect**: Console will show "Server running on port [PORT]" and connection status to TCP server and MongoDB.
 
@@ -235,9 +235,9 @@ If you prefer to inspect logs or develop a single component, follow these detail
    ```
 
 4. **Access the application**:
-   - Automatically opens in browser at http://localhost:${REACT_PORT}
-   - If not, manually navigate to the URL
-   - Uses API base URL: ${REACT_APP_API_URL}
+- Automatically opens in browser at http://localhost:${REACT_PORT}
+- If not, manually navigate to the URL
+- Uses API base URL: ${REACT_APP_API_URL}
 
 **What to expect**: Browser opens automatically, showing the React application interface.
 
@@ -255,11 +255,11 @@ If you prefer to inspect logs or develop a single component, follow these detail
    - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
 2. **Ensure Backend Services are Running**:
-   - Make sure you have completed the Docker setup and all services are running:
-     - TCP server at localhost:5555
-     - API at http://localhost:3000
-     - Web UI at http://localhost:3001
-     - MongoDB service
+ - Make sure you have completed the Docker setup and all services are running:
+ - TCP server at localhost:5555
+ - API at http://localhost:3000
+ - Web UI at http://localhost:3001
+ - MongoDB service
 
 ### Configuration Steps:
 
