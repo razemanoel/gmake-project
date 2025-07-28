@@ -9,7 +9,9 @@ We have developed a fully functional Gmail-like email platform, available both a
 3. **React frontend**  
    - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
 4. **Android app**  
-   - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services  
+   - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services
+  
+     
 
 You can run the entire stack with Docker Compose or individually for development.
 
