@@ -2,13 +2,11 @@
 ## Overview
 In this final phase, we completed the entire project, covering both frontend and backend development.
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
-1. **C++ TCP server** - A Bloom-filter–based blacklist service listening on a TCP port  
-2. **Node.js API** - Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
-3. **React frontend** - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
-4. **Android app** - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services
+1. **C++ TCP server** - Manages a Bloom Filter-based blacklist system for URLs. Operates concurrently to handle multiple API requests via TCP sockets and persists data to file. 
+2. **Node.js API server** - Provides a robust RESTful API for user authentication, email operations, label management, and spam handling. Follows the MVC architecture with SOLID design principles and uses MongoDB for persistent storage.  
+3. **React frontend** - A responsive, Gmail-style web interface that connects to the central API and TCP services. Supports full mail functionality including inbox, compose, drafts, labels, spam detection, dark/light mode, and search.  
+4. **Android app** -  A native mobile client (MVVM + Retrofit + Room) that connects to the same backend servers. Mirrors the full mail functionality of the web app, including composing, editing drafts, applying/removing labels, spam filtering, and blacklist support.
       
-
-You can run the entire stack with Docker Compose or individually for development.
 
 
 The system supports core Gmail-like functionality, including:
@@ -123,36 +121,47 @@ MONGO_DATA_PATH=/data/db
 
   <br>
 
-##  Docker Setup
+## Docker Setup
 
-### 3. Build & Launch with Docker Compose
-   
-Your docker-compose.yml (v3.8) will build and start:
+Once your `config/.env.local` file is ready, you can build and run all services using Docker Compose.
 
-• **tcpserver** (C++ service) → TCP port 5555  
-• **apiserver** (Node.js API) → HTTP port 3000  
-• **frontend** (React web UI) → HTTP port 3001  
-• **mongodb_service** (MongoDB container) → port 27017  
+### Build & Launch with Docker Compose
 
-Run:
+To build and launch all containers, run:
 
 ```bash
-
 docker-compose --env-file ./config/.env.local up --build
 ```
+
+This will start the following services:
+
+| Service           | Description                        | Port     |
+|-------------------|------------------------------------|----------|
+| **tcpserver**      | C++ TCP Bloom Filter server        | `5555`   |
+| **apiserver**      | Node.js + Express API backend      | `3000`   |
+| **frontend**       | React Gmail-style web interface    | `3001`   |
+| **mongodb_service**| MongoDB for persistent storage     | `27017`  |
 
 
 Docker Compose will:
 
-1. Parse docker-compose.yml to know which services to bring up.
-2. Load every KEY=VALUE pair from config/.env.local and inject them into each container's environment.
-3. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
+1. Parse `docker-compose.yml` to identify which services to run  
+2. Load all key-value pairs from `config/.env.local`  
+3. Inject these variables into each container's environment  
+4. Build and start the services in the correct order  
 
-####  To stop and remove containers:
+
+###  Stop and Clean Up
+
+To stop and remove all running containers, run:
 
 ```bash
 docker-compose down
 ```
+
+
+
+
   <br>
 
 ##  Android Configuration
