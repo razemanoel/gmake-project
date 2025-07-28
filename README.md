@@ -60,8 +60,6 @@ For detailed explanations of features, components, and usage examples, please re
 
 
 
-
-
 ### Project Structure
 
 - **backend/**: C++ TCP server (Bloom filter)
@@ -70,14 +68,7 @@ For detailed explanations of features, components, and usage examples, please re
 - **android/**: the Android Studio project for the mobile client
 - **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
 - **docker-compose.yml**: builds & links the three Docker images into a single, live system
-
-  
-
-  
-
-
-
-
+- 
 
 
 
