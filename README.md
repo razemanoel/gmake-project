@@ -74,7 +74,6 @@ Open terminal and run:
 
 ```bash
 git clone https://github.com/razemanoel/EX-5.git
-cd the-repo
 ```
 
 ### 2. Create Environment Configuration
