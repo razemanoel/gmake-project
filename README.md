@@ -29,7 +29,7 @@ The system supports core Gmail-like functionality, including:
   <br>
 
   
-### For detailed explanations of features, components, and usage examples, please refer to the project Wiki.
+#### For detailed explanations of features, components, and usage examples, please refer to the project Wiki.
 
 <br><br>
 
@@ -250,7 +250,7 @@ If you prefer to inspect logs or develop a single component, follow these detail
   
 ##  Android Configuration
 
-### 5. Pre-requirements:
+### Pre-requirements:
 1. **Install Android Studio**:
  - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
