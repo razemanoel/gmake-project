@@ -26,43 +26,52 @@ The system supports core Gmail-like functionality, including:
   
 #### For detailed explanations of features, components, and usage examples, please refer to the project's [**wiki**](https://github.com/razemanoel/EX-5/tree/main/wiki).
 
-<br>
-
-## Project Architecture
-
-- **Client Layer**  
-  The React web app and the Android app both communicate over HTTP with the Node.js API.
-
-- **API Layer**  
-  The Node.js server handles data storage (MongoDB), business logic, and JWT-based authentication.  
-  For each spam/blacklist check, it opens a TCP connection to the Bloom-filter service.
-
-- **TCP Service**  
-  The C++ Bloom-filter server performs ultra-fast, memory-efficient blacklist checks and URL additions.
-
-- **Persistence**  
-  User accounts, emails, and labels are stored in MongoDB.
-
-- **Dev & Deployment**  
-  Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
-
 
 <br>
 
 
 ## Project Structure
 
-- **backend/**: C++ TCP server (Bloom filter)
-- **api/**: the Node.js/Express server talking to MongoDB and the C++ service
-- **frontend/**: React app that talks to the API
-- **android/**: the Android Studio project for the mobile client
-- **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
-- **docker-compose.yml**: builds & links the three Docker images into a single, live system
-  
+```
+Gmail-Project/
+│
+├── backend/                 # C++ TCP server (Bloom Filter blacklist)
+│   ├── src/
+│   ├── Dockerfile.tcpserver
+│   └── CMakeLists.txt
+│
+├── api/                     # Node.js + Express API server
+│   ├── src/
+│   ├── Dockerfile.api
+│   ├── server.js
+│   └── ...
+│
+├── frontend/                # React application
+│   ├── src/
+│   ├── Dockerfile.react
+│   └── ...
+│
+├── android/                 # Android Studio project for the mobile client
+│   ├── app/
+│   ├── build.gradle
+│   └── ...
+│
+├── config/
+│   └── .env.local           # Overridable env-vars (ports, secrets, connection strings)
+│
+├── wiki/                    # Project documentation (used in README and wiki section)
+│   ├── web.md               # Web client usage documentation
+│   ├── android.md           # Android app usage documentation
+│   ├── webDoc/              # Screenshots, UI flows for web
+│   └── androidDoc/          # Screenshots, UI flows for Android
+│
+└── docker-compose.yml       # Orchestrates all services
+```
+
 
 <br>
 
-#  Setup & Run Guide
+##  Setup & Run Guide
 
 
 ### 1. Clone the Repository
@@ -132,13 +141,6 @@ Run:
 docker-compose --env-file ./config/.env.local up --build
 ```
 
-Wait until all containers are healthy.
-
-####  Verify:
-
-- TCP server at localhost:5555
-- API at http://localhost:3000
-- Web UI at http://localhost:3001
 
 Docker Compose will:
 
