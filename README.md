@@ -250,10 +250,10 @@ jwt_secret=${JWT_SECRET}  # Use the same value as JWT_SECRET in config/.env.loca
   - Example output: `IPv4 Address. . . . . . . . . . . : 192.168.1.242`
 
 - **macOS**:  
-  - Open Terminal  
-  - Run: `ifconfig`  
-  - Look for `inet` address under your network interface (typically `en0` for Wi-Fi)  
-  - Example output: `inet 192.168.1.242 netmask 0xffffff00 broadcast 192.168.1.255`
+- Open Terminal  
+- Run: `ifconfig`  
+- Look for `inet` address under your network interface (typically `en0` for Wi-Fi)  
+- Example output: `inet 192.168.1.242 netmask 0xffffff00 broadcast 192.168.1.255`
 
 - **Linux**:  
   - Open Terminal  
