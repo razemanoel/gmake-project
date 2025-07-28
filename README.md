@@ -3,13 +3,13 @@
 In this final phase, we completed the entire project, covering both frontend and backend development.
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
 1. **C++ TCP server**  
-   - A Bloom-filter–based blacklist service listening on a TCP port  
+- A Bloom-filter–based blacklist service listening on a TCP port  
 2. **Node.js API**  
-   - Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
+- Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
 3. **React frontend**  
-   - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
+ - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
 4. **Android app**  
-   - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services
+ - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services
       
 
 You can run the entire stack with Docker Compose or individually for development.
