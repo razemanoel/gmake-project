@@ -130,7 +130,7 @@ MONGO_DATA_PATH=/data/db
 - **MONGO_URI**: The full connection string for the MongoDB instance, used by the API server to persist user, mail, and label data.
 - **MONGO_DATA_PATH**: Path inside the MongoDB container where the data will be stored. Used as a mount point for Docker volumes.
 - **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
-- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{APP_PORT} )
+- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )
 
 ## 🐳 Docker Setup
 
@@ -194,7 +194,7 @@ npm install
 npm run dev   # or npm start
 ```
 
-Visit http://localhost:${APP_PORT}
+Visit http://localhost:${API_PORT}
 
 - Expects the TCP server on ${TCP_PORT}
 - Connects to MongoDB at ${CONNECTION_STRING}
@@ -220,7 +220,7 @@ Create `app/src/main/res/raw/config.properties` with:
 
 ```properties
 ip_address=10.0.2.2       # emulator → host machine; or your LAN IP on device
-port=${APP_PORT}          # e.g. 3000
+port=${API_PORT}          # e.g. 3000
 jwt_secret=${JWT_SECRET}
 ```
 
