@@ -1,4 +1,4 @@
-# 📧 Gmail-Project
+#  Gmail-Project
 ## Overview
 In this final phase, we completed the entire project, covering both frontend and backend development.
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
@@ -38,7 +38,7 @@ The system supports core Gmail-like functionality, including:
 
 ### Core Components
 
-## 🏗️ How It All Fits Together:
+##  How It All Fits Together:
 
 ### 1. **Client Layer**
 - The React web app and the Android app both communicate over HTTP with the Node.js API.
@@ -72,9 +72,9 @@ The system supports core Gmail-like functionality, including:
 
 
 
-# 📧 Gmail-Style Application: Setup & Run Guide
+#  Gmail-Style Application: Setup & Run Guide
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
    
@@ -113,7 +113,7 @@ MONGO_URI=mongodb://mongodb_service:27017
 MONGO_DATA_PATH=/data/db    
 ```
 
-#### 📋 **Explanation of the variables:**
+####  **Explanation of the variables:**
 
 - **API_PORT**: Defines the port on your local machine (host) to access the Node.js server.This can be customized as needed during setup.
 - **FRONTEND_PORT**: Defines the porton your local machine (host) to access the React web app.This can be customized as needed during setup.
@@ -123,7 +123,7 @@ MONGO_DATA_PATH=/data/db
 - **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
 - **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )
 
-## 🐳 Docker Setup
+##  Docker Setup
 
 ### 3. Build & Launch with Docker Compose
    
@@ -143,7 +143,7 @@ docker-compose --env-file ./config/.env.local up --build
 
 Wait until all containers are healthy.
 
-#### ✅ Verify:
+####  Verify:
 
 - TCP server at localhost:5555
 - API at http://localhost:3000
@@ -155,13 +155,13 @@ Docker Compose will:
 2. Load every KEY=VALUE pair from config/.env.local and inject them into each container's environment.
 3. Substitute any ${VAR} placeholders in docker-compose.yml (if used) with those values.
 
-#### 🛑 To stop and remove containers:
+####  To stop and remove containers:
 
 ```bash
 docker-compose down
 ```
 
-## ⚙️ Individual Service Setup
+##  Individual Service Setup
 
 ### 4. Run Services Individually
    
@@ -201,7 +201,7 @@ npm start
 - Opens in browser at http://localhost:${REACT_PORT}
 - Uses API base URL: ${REACT_APP_API_URL}
 
-## 📱 Android Configuration
+##  Android Configuration
 
 ### 5. Pre-requirements:
 1. **Install Android Studio**:
@@ -337,14 +337,14 @@ Once the app launches successfully, you should be able to access all Gmail-like 
 - Mail search and filtering
 - Soft and permanent deletion
 
-## 🐋 Docker Configuration Files
+##  Docker Configuration Files
 
-#### 📝 Services Overview:
+####  Services Overview:
 - **tcpserver**: builds from backend/Dockerfile.tcpserver, exposing port 5555 for the C++ Bloom-filter TCP server.
 - **apiserver**: builds from api/Dockerfile.api, exposing port 3000 for the Node.js API (depends on tcpserver).
 - **frontend**: builds from frontend/Dockerfile.react, exposing port 3001 for the React web UI (depends on apiserver).
 
-#### 🌐 Network:
+####  Network:
 All three share the internal network so they can communicate by service name (e.g., tcpserver:5555).
 
 The **`docker-compose.yml`** at the project root then wires them all together on a single network.  
@@ -356,7 +356,7 @@ docker-compose --env-file ./config/.env.local up --build
 
 ---
 
-## 🎯 Quick Start Summary
+##  Quick Start Summary
 
 1. **Clone** the repository
 2. **Create** environment configuration
