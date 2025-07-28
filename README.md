@@ -212,7 +212,7 @@ npm start
 
 ## 📱6. Android Configuration
 
-### Prerequisites:
+### Pre-requirements:
 1. **Install Android Studio**:
    - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
