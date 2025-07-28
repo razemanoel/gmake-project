@@ -52,8 +52,8 @@ Gmail-Project/
 │   ├── build.gradle
 │   └── ...
 │
-├── config/
-│   └── .env.local           # Overridable env-vars (ports, secrets, connection strings)
+├── config/                  # Overridable env-vars (ports, secrets, connection strings) - need to create
+│   └── .env.local           
 │
 ├── wiki/                    # Project documentation (used in README and wiki section)
 │   ├── web.md               
@@ -113,7 +113,7 @@ MONGO_DATA_PATH=/data/db
 - **MONGO_URI**: The full connection string for the MongoDB instance, used by the API server to persist user, mail, and label data.  
 - **MONGO_DATA_PATH**: Path inside the MongoDB container where the data will be stored. Used as a mount point for Docker volumes.  
 - **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.  
-- **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )  
+- **REACT_APP_API_URL**: Defines the way to get the api server(must be : `http://localhost:{API_PORT}` )  
   <br>
   
 ## Docker Setup
