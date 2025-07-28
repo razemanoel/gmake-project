@@ -71,9 +71,8 @@ The system supports core Gmail-like functionality, including:
 
 
 
-#  Gmail-Style Application: Setup & Run Guide
+#  Setup & Run Guide
 
-##  Getting Started
 
 ### 1. Clone the Repository
    
