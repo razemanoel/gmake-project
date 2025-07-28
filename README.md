@@ -318,11 +318,9 @@ EXPOSE 3001
 CMD ["serve", "-s", "build", "-l", "3001"]
 ```
 ```
-
-### Docker Compose Configuration
+## Docker Compose Configuration
 
 Here's the complete docker-compose.yml you'll need alongside the Dockerfiles:
-
 
 ```yaml
 version: '3.8'
