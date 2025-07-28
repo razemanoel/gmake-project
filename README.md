@@ -27,7 +27,11 @@ The system supports core Gmail-like functionality, including:
 For detailed explanations of features, components, and usage examples, please refer to the project **Wiki**.  
 
 
+
+
 ## Project Architecture
+
+
 
 ### Core Components
 
@@ -49,6 +53,8 @@ For detailed explanations of features, components, and usage examples, please re
 ### 5. **Dev & Deployment**
 - Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
+- 
+
 
 
 ### Project Structure
@@ -59,6 +65,8 @@ For detailed explanations of features, components, and usage examples, please re
 - **android/**: the Android Studio project for the mobile client
 - **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
 - **docker-compose.yml**: builds & links the three Docker images into a single, live system
+
+- 
 
 
 
