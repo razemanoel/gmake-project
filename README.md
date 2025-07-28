@@ -56,10 +56,10 @@ Gmail-Project/
 │   └── .env.local           # Overridable env-vars (ports, secrets, connection strings)
 │
 ├── wiki/                    # Project documentation (used in README and wiki section)
-│   ├── web.md               # Web client usage documentation
-│   ├── android.md           # Android app usage documentation
-│   ├── webDoc/              # Screenshots, UI flows for web
-│   └── androidDoc/          # Screenshots, UI flows for Android
+│   ├── web.md               
+│   ├── android.md           
+│   ├── webDoc/              
+│   └── androidDoc/          
 │
 └── docker-compose.yml       # Orchestrates all services
 ```
@@ -153,6 +153,12 @@ To stop and remove all running containers, run:
 ```bash
 docker-compose down
 ```
+
+### Access the Web App
+
+Once all services are running, open the Gmail web interface in your browser:
+[http://localhost:3001](http://localhost:3001)
+
   <br>
 
 ##  Android Configuration
