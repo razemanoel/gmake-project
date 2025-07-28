@@ -26,11 +26,9 @@ The system supports core Gmail-like functionality, including:
 - Mail search and filtering  
 - Soft and permanent deletion
 
-<br><br>
-
+  
 ### For detailed explanations of features, components, and usage examples, please refer to the project Wiki.
 
-<br><br>
 
 
 ## Project Architecture
