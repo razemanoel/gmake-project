@@ -125,7 +125,7 @@ Once your `config/.env.local` file is ready, you can build and run all services 
 To build and launch all containers, run:
 
 ```bash
-docker-compose --env-file ./config/.env.local up --build
+docker compose --env-file ./config/.env.local up --build
 ```
 
 This will start the following services:
@@ -151,7 +151,7 @@ Docker Compose will:
 To stop and remove all running containers, run:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Access the Web App
