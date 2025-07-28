@@ -36,9 +36,8 @@ The system supports core Gmail-like functionality, including:
 
 
 
-### Core Components
+### Core Components and How It All Fits Together:
 
-##  How It All Fits Together:
 
 ### 1. **Client Layer**
 - The React web app and the Android app both communicate over HTTP with the Node.js API.
