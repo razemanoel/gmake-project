@@ -121,6 +121,8 @@ MONGO_DATA_PATH=/data/db
 - **JWT_SECRET**: A secret key used by the Node.js API server to sign and verify JWT tokens for authentication. This should be a strong, unique string and kept private.
 - **REACT_APP_API_URL**: Defines the way to get the api server(must be : http://localhost:{API_PORT} )
 
+  <br>
+
 ##  Docker Setup
 
 ### 3. Build & Launch with Docker Compose
@@ -357,10 +359,10 @@ jwt_secret=Vj4@7sF!9K#pLz^D2o7uN13X6A9Q5
 #### 4. Build and Run:
 1. **Ensure all Docker services are running** (from the Docker setup section)
 2. **In Android Studio**:
-   - Wait for the project to sync and build
-   - Connect an Android device via USB **OR** start an Android Virtual Device (AVD)
-   - Click the **"Run"** button (green play icon) or press `Shift + F10`
-   - Select your target device (emulator or physical device)
+- Wait for the project to sync and build
+- Connect an Android device via USB **OR** start an Android Virtual Device (AVD)
+- Click the **"Run"** button (green play icon) or press `Shift + F10`
+- Select your target device (emulator or physical device)
 
 #### 5. Verify Connection:
 The Android app will connect to:
