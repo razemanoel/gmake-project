@@ -243,23 +243,23 @@ jwt_secret=${JWT_SECRET}  # Use the same value as JWT_SECRET in config/.env.loca
 
 **To find your local IP address:**
 
-- **Windows**:  
-  - Open Command Prompt (`Win + R`, type `cmd`, press Enter)  
-  - Run: `ipconfig`  
-  - Look for **"IPv4 Address"** under your network adapter (Wi-Fi or Ethernet)  
-  - Example output: `IPv4 Address. . . . . . . . . . . : 192.168.1.242`
+ **Windows**:  
+- Open Command Prompt (`Win + R`, type `cmd`, press Enter)  
+- Run: `ipconfig`  
+- Look for **"IPv4 Address"** under your network adapter (Wi-Fi or Ethernet)  
+- Example output: `IPv4 Address. . . . . . . . . . . : 192.168.1.242`
 
-- **macOS**:  
+ **macOS**:  
 - Open Terminal  
 - Run: `ifconfig`  
 - Look for `inet` address under your network interface (typically `en0` for Wi-Fi)  
 - Example output: `inet 192.168.1.242 netmask 0xffffff00 broadcast 192.168.1.255`
 
-- **Linux**:  
-  - Open Terminal  
-  - Run: `ifconfig` (or `ip a` for newer systems)  
-  - Find `inet` address under your network interface (e.g., `wlan0` for Wi-Fi)  
-  - Example output: `inet 192.168.1.242 netmask 255.255.255.0 broadcast 192.168.1.255`
+ **Linux**:  
+- Open Terminal  
+- Run: `ifconfig` (or `ip a` for newer systems)  
+- Find `inet` address under your network interface (e.g., `wlan0` for Wi-Fi)  
+- Example output: `inet 192.168.1.242 netmask 255.255.255.0 broadcast 192.168.1.255`
 
 **port**: Use the same value as `API_PORT` in your `config/.env.local` file (default: 3000)
 
