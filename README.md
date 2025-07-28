@@ -249,40 +249,28 @@ Run the app on an emulator or physical device. It will connect to:
 #### 1. backend/Dockerfile.tcpserver
 
 ```dockerfile
-# Stage 1: build the C++ TCP (Bloom-filter) server
 FROM gcc:latest AS builder
-
+ 
 WORKDIR /usr/src/app
-
-# Install CMake and other build tools
-RUN apt-get update && \
-    apt-get install -y cmake git && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy all sources and build
+ 
+RUN apt-get update && apt-get install -y cmake git && rm -rf /var/lib/apt/lists/*
+ 
 COPY . .
+ 
 RUN rm -rf build && mkdir build && cd build && cmake ../backend && make
-
-# Stage 2: runtime image
+ 
 FROM gcc:latest AS runtime
-
+ 
 WORKDIR /app
-
-# (Optional) install any runtime deps 
-RUN apt-get update && \
-    apt-get install -y python3 && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy the compiled server and any data files
+ 
+RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
+ 
 COPY --from=builder /usr/src/app/build/server ./server
+ 
 COPY backend/data ./data
-
+ 
 RUN chmod +x ./server
-
-# Expose the TCP port (matches compose mapping)
-EXPOSE 5555
-
-# Default command: server <port> <other args if any>
+ 
 CMD ["./server", "5555", "16", "1"]
 ```
 
@@ -290,54 +278,45 @@ CMD ["./server", "5555", "16", "1"]
 
 ```dockerfile
 FROM node:18
-
-# Create application directory
+ 
 WORKDIR /usr/api
-
+ 
 # Install dependencies
 COPY api/package*.json ./
 RUN npm install
-
-# Copy application code
+ 
+#  Copy env file into the container
+COPY config/.env.local ./config/.env.local
+ 
+# Copy the rest of the API
 COPY api/ .
-
-# Expose the API port
+ 
 EXPOSE 3000
-
-# Start the server
 CMD ["node", "server.js"]
 ```
 
 #### 3. frontend/Dockerfile.react
 
 ```dockerfile
-# Stage 1: build the React app
 FROM node:18 AS build
-
+ 
 WORKDIR /usr/src/app
-
+ 
 COPY frontend/package*.json ./
 RUN npm install
-
+ 
+COPY config/.env.local .env
 COPY frontend/ .
+ 
 RUN npm run build
-
-# Stage 2: serve the build
+ 
 FROM node:18-alpine
-
 WORKDIR /usr/src/app
-
-# Install a simple static server
 RUN npm install -g serve
-
-# Copy built files
 COPY --from=build /usr/src/app/build ./build
-
-# Expose the frontend port
 EXPOSE 3001
-
-# Serve the React build
 CMD ["serve", "-s", "build", "-l", "3001"]
+```
 ```
 
 ### Docker Compose Configuration
