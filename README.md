@@ -67,7 +67,7 @@ The system supports core Gmail-like functionality, including:
 - **android/**: the Android Studio project for the mobile client
 - **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
 - **docker-compose.yml**: builds & links the three Docker images into a single, live system
-- 
+  
 
 
 
@@ -159,45 +159,90 @@ Docker Compose will:
 docker-compose down
 ```
 
-##  Individual Service Setup
-
 ### 4. Run Services Individually
-   
-If you prefer to inspect logs or develop a single component:
+
+If you prefer to inspect logs or develop a single component, follow these detailed steps:
 
 #### A. C++ TCP Server:
 
-```bash
-cd backend
-mkdir -p build && cd build
-cmake ..
-make
-./tcpserver ${TCP_PORT}
-```
+1. **Navigate to the backend directory**:
+   ```bash
+   cd backend
+   ```
+
+2. **Create and configure build directory**:
+   ```bash
+   mkdir -p build && cd build
+   ```
+
+3. **Generate build files and compile**:
+   ```bash
+   cmake ..
+   make
+   ```
+
+4. **Run the TCP server**:
+   ```bash
+   ./tcpserver ${TCP_PORT}
+   ```
+   
+
+**What to expect**: The server will display "TCP Server listening on port [PORT]" and wait for connections.
 
 #### B. Node.js API Server:
 
-```bash
-cd api
-npm install
-npm run dev   # or npm start
-```
+1. **Navigate to the API directory**:
+   ```bash
+   cd api
+   ```
 
-Visit http://localhost:${API_PORT}
+2. **Install dependencies** (first time only):
+   ```bash
+   npm install
+   ```
 
-- Expects the TCP server on ${TCP_PORT}
-- Connects to MongoDB at ${CONNECTION_STRING}
+3. **Start the development server**:
+   ```bash
+   npm run dev   # Development mode with auto-reload
+   # OR
+   npm start     # Production mode
+   ```
+
+4. **Verify it's running**:
+   - Visit http://localhost:${API_PORT}
+   - The API expects the TCP server running on port ${TCP_PORT}
+   - Connects to MongoDB at ${CONNECTION_STRING}
+
+**What to expect**: Console will show "Server running on port [PORT]" and connection status to TCP server and MongoDB.
 
 #### C. React Frontend:
 
-```bash
-cd frontend
-npm install
-npm start
-```
+1. **Navigate to the frontend directory**:
+   ```bash
+   cd frontend
+   ```
 
-- Opens in browser at http://localhost:${REACT_PORT}
-- Uses API base URL: ${REACT_APP_API_URL}
+2. **Install dependencies** (first time only):
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npm start
+   ```
+
+4. **Access the application**:
+   - Automatically opens in browser at http://localhost:${REACT_PORT}
+   - If not, manually navigate to the URL
+   - Uses API base URL: ${REACT_APP_API_URL}
+
+**What to expect**: Browser opens automatically, showing the React application interface.
+
+#### Service Dependencies:
+- **Frontend** depends on **API Server**
+- **API Server** depends on **TCP Server** and **MongoDB**
+- Start services in order: TCP Server → API Server → Frontend
 
 ##  Android Configuration
 
