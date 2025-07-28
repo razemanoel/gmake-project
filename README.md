@@ -29,7 +29,10 @@ For detailed explanations of features, components, and usage examples, please re
 
 
 
+
+
 ## Project Architecture
+
 
 
 
@@ -53,7 +56,9 @@ For detailed explanations of features, components, and usage examples, please re
 ### 5. **Dev & Deployment**
 - Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
-- 
+
+
+
 
 
 
@@ -66,7 +71,9 @@ For detailed explanations of features, components, and usage examples, please re
 - **config/.env.local**: overridable env-vars (ports, secrets, connection strings)
 - **docker-compose.yml**: builds & links the three Docker images into a single, live system
 
-- 
+  
+
+  
 
 
 
