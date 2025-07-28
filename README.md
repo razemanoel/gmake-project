@@ -3,9 +3,9 @@
 In this final phase, we completed the entire project, covering both frontend and backend development.
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
 1. **C++ TCP server**  
-- A Bloom-filter–based blacklist service listening on a TCP port  
+ - A Bloom-filter–based blacklist service listening on a TCP port  
 2. **Node.js API**  
-- Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
+ - Express server with MongoDB for user/mail storage, JWT authentication, and a TCP client to the C++ server  
 3. **React frontend**  
  - Web UI (Inbox, Compose, Labels, Dark/Light mode) communicating with the Node.js API  
 4. **Android app**  
@@ -252,7 +252,7 @@ If you prefer to inspect logs or develop a single component, follow these detail
 
 ### 5. Pre-requirements:
 1. **Install Android Studio**:
-   - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
+ - Download and install Android Studio if you haven't already from [https://developer.android.com/studio](https://developer.android.com/studio)
 
 2. **Ensure Backend Services are Running**:
  - Make sure you have completed the Docker setup and all services are running:
