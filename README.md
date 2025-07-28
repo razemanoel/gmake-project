@@ -210,7 +210,7 @@ npm start
 - Opens in browser at http://localhost:${REACT_PORT}
 - Uses API base URL: ${REACT_APP_API_URL}
 
-## 📱 Android Configuration
+## 📱6. Android Configuration
 
 ### Prerequisites:
 1. **Install Android Studio**:
