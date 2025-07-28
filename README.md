@@ -13,8 +13,9 @@ The system supports core Gmail-like functionality, including:
 
 - User registration and login  
 - Profile management  
-- Email composition, sending, replying and forwarding  
-- Draft saving and editing  
+- Email composition and sending
+- Draft saving and editing
+- Spam links via bloom filter
 - Inbox, Sent, Drafts, Spam and Trash folders  
 - Label creation, editing and assignment  
 - Mail search and filtering  
