@@ -56,10 +56,10 @@ The system supports core Gmail-like functionality, including:
 - Docker Compose orchestrates all components (TCP service, API server, React UI) into a single, reproducible environment—no manual port wiring required.
 
 
+<br>
 
 
-
-### Project Structure
+## Project Structure
 
 - **backend/**: C++ TCP server (Bloom filter)
 - **api/**: the Node.js/Express server talking to MongoDB and the C++ service
