@@ -52,7 +52,7 @@ Gmail-Project/
 │   ├── build.gradle
 │   └── ...
 │
-├── config/                  # Overridable env-vars (ports, secrets, connection strings) - need to create
+├── config/                  # Custom env-vars (must create manually)
 │   └── .env.local           
 │
 ├── wiki/                    # Project documentation (used in README and wiki section)
@@ -285,16 +285,7 @@ The Android app will connect to:
 
 **Note**: Make sure the values in `config.properties` match your `config/.env.local` file and that the IP addresses in `network_security_config.xml` correspond to your setup (emulator vs physical device).
 
-Once the app launches successfully, you should be able to access all Gmail-like functionality including:
-
-- User registration and login
-- Profile management
-- Email composition, sending, replying and forwarding
-- Draft saving and editing
-- Inbox, Sent, Drafts, Spam and Trash folders
-- Label creation, editing and assignment
-- Mail search and filtering
-- Soft and permanent deletion
+Once the app launches successfully, you should be able to access all Gmail-like functionality.
 
 
 ---
