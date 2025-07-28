@@ -12,6 +12,7 @@ We have developed a fully functional Gmail-like email platform, available both a
    - Native mobile client (MVVM + Room + Retrofit) that connects to the same API and TCP services  
 
 You can run the entire stack with Docker Compose or individually for development.
+<br>
 
 The system supports core Gmail-like functionality, including:
 
@@ -22,7 +23,9 @@ The system supports core Gmail-like functionality, including:
 - Inbox, Sent, Drafts, Spam and Trash folders  
 - Label creation, editing and assignment  
 - Mail search and filtering  
-- Soft and permanent deletion  
+- Soft and permanent deletion
+
+  <br>
 
 ### For detailed explanations of features, components, and usage examples, please refer to the project Wiki.
 
