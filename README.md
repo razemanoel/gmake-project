@@ -1,4 +1,12 @@
 #  Gmail-Project
+
+## Table of Contents
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Setup & Run Guide](#setup--run-guide)
+- [Android Configuration](#android-configuration)
+--- 
+
 ## Overview
 In this final phase, we completed the entire project, covering both frontend and backend development.
 We have developed a fully functional Gmail-like email platform, available both as a web application and a native Android app with four components:
