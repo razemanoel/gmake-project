@@ -94,7 +94,7 @@ const ComposeMail = ({ onSent, initialData }) => {
         <h2>Compose Mail</h2>
 
         <div>
-          <label>To Username:</label>
+          <label>To :</label>
           <input
             type="text"
             name="toUsername"
