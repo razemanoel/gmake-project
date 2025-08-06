@@ -96,8 +96,13 @@ public class ComposeMailFragment extends Fragment {
             Callback<ResponseBody> sendCallback = new Callback<>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Toast.makeText(getContext(), "Mail sent!", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager().popBackStack();
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Mail sent!", Toast.LENGTH_SHORT).show();
+                        requireActivity().getSupportFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(getContext(), "Send failed", Toast.LENGTH_SHORT).show();
+                        sendButton.setEnabled(true);
+                    }
                 }
 
                 @Override
