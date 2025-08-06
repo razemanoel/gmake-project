@@ -20,15 +20,33 @@
             android:contentDescription="Gmail Logo"
             android:layout_marginBottom="32dp" />
 
-        <!-- Username -->
-        <EditText
-            android:id="@+id/editTextUsername"
+        <!-- Username with @gmail.com suffix -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:background="@drawable/edittext_background"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Username"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@gmail.com"
+                android:textColor="#888888"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="4dp"/>
+        </LinearLayout>
 
         <!-- Name -->
         <EditText
@@ -61,7 +79,6 @@
             android:background="@drawable/edittext_background"
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
-
 
         <!-- Avatar URL -->
         <Button

@@ -43,6 +43,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
 
+    private boolean isValidUsername(String username) {
+        return username.matches("^(?![_.])[a-zA-Z0-9._]{3,20}(?<![_.])$");
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$");
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +90,23 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
+            if (!isValidUsername(username)) {
+                Toast.makeText(this, "Username must be 3-20 characters, letters, numbers, dots, underscores; no _ or . at start/end", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (!isValidPassword(password)) {
+                Toast.makeText(this, "Password must be 8+ chars, include uppercase, lowercase, number and special char", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (name.length() < 2 || name.length() > 50) {
+                Toast.makeText(this, "Display name must be between 2 and 50 characters", Toast.LENGTH_SHORT).show();
                 return;
             }
 

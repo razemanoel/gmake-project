@@ -48,6 +48,11 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            if (!username.endsWith("@gmail.com")) {
+                Toast.makeText(this, "Username must end with @gmail.com", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             tokenRepository.login(username, password).observe(this, loginResponse -> {
                 if (loginResponse != null) {
                     Log.d("LoginActivity", "LoginResponse: token=" + loginResponse.getToken());
