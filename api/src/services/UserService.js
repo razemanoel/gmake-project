@@ -4,7 +4,7 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 class UserService {
   static isValidUsername(username) {
-    const usernameRegex = /^(?![_.])[a-zA-Z0-9._]{3,20}(?<![_.])$/;
+    const usernameRegex = /^(?![_.])[a-zA-Z0-9._]{3,20}(?<![_.])@gmail\.com$/;
     return usernameRegex.test(username);
   }
 

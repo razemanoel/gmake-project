@@ -8,12 +8,13 @@ class UserController {
    */
   async register(req, res) {
     try {
-      const { username, password, name } = req.body;
+      let { username, password, name } = req.body;
       const avatar = req.file;
 
       if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required' });
       }
+       username = username.trim() + '@gmail.com';
 
       // Check if username already exists
       const existing = await userService.getUserByUsername(username);
