@@ -1,5 +1,9 @@
 #  Gmail-Project
 
+> **Note:** The latest updates were made with approval from Tzvika Berger, following late feedback on Exercise 4.  
+> These include switching the mail sending logic to use email addresses instead of usernames, as well as other related fixes.
+
+
 ## Table of Contents
 - [Overview](#overview)
 - [Project Structure](#project-structure)
